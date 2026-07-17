@@ -153,6 +153,10 @@
             display: inline-block;
             margin: 5px;
         }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -354,6 +358,20 @@
             display: inline-block;
             margin: 5px 0;
         }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #ffd700;
+            animation: spin 0.8s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -452,7 +470,7 @@
                 <p>شماره کارت: <strong class="text-gold" id="display-card">---</strong></p>
                 <p>ارسال رسید به آیدی: <strong class="text-gold" id="display-telegram">---</strong></p>
                 <input type="file" id="receipt-file" accept="image/*" style="background:transparent; border:none; padding:0;">
-                <button class="btn" onclick="uploadReceipt()">📤 آپلود رسید</button>
+                <button class="btn" id="upload-btn" onclick="uploadReceipt()">📤 آپلود رسید</button>
                 <div id="receipt-preview-container"></div>
                 <p id="payment-status" class="text-muted mt-10">وضعیت: در انتظار تایید</p>
                 <p id="user-code-display" class="text-muted">کد اختصاصی: ---</p>
@@ -495,7 +513,7 @@
             <p class="text-muted text-center" style="margin-top:10px;">تغییرات لحظه‌ای در دیتابیس ذخیره می‌شود.</p>
         </div>
 
-        <div class="footer-click" onclick="adminClickCounter()">طراحی شده توسط ⚡ | </div>
+        <div class="footer-click" onclick="adminClickCounter()">طراحی شده توسط ⚡ | کلیک مخفی (۵ بار)</div>
     </div>
 
     <script>
@@ -505,7 +523,7 @@
         const BIN_ID = '6a5a730eda38895dfe6c2898';
         const API_KEY = '$2a$10$QvdPKuxFY1/1xMwItmT7F.R7AiUHc4zHYSY68SwqrIRhxC4N6sHAC';
         const BASE_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
-        const REQUIRED_PARTICIPANTS = 10; // changed from 3 to 10
+        const REQUIRED_PARTICIPANTS = 10;
 
         // ============================================================
         //  STATE
@@ -702,7 +720,7 @@
         }
 
         // ============================================================
-        //  DASHBOARD & RECEIPT UPLOAD
+        //  DASHBOARD & RECEIPT UPLOAD (with compression)
         // ============================================================
         function renderDashboard() {
             const user = appData.users.find(u => u.phone === currentUser);
@@ -738,25 +756,66 @@
                 '❌ شما در لیست شرکت‌کنندگان نیستید.';
         }
 
+        // Compress image before upload
+        function compressImage(file, maxWidth = 800, quality = 0.7) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > maxWidth) {
+                            height = (maxWidth / width) * height;
+                            width = maxWidth;
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        // Convert to JPEG with given quality
+                        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        resolve(dataUrl);
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
         async function uploadReceipt() {
             if (!currentUser) return showFlash('وارد شوید!', true);
             const fileInput = document.getElementById('receipt-file');
             const file = fileInput.files[0];
             if (!file) return showFlash('لطفاً یک عکس انتخاب کنید.', true);
 
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                const base64 = e.target.result;
+            const btn = document.getElementById('upload-btn');
+            btn.disabled = true;
+            btn.innerHTML = '⏳ در حال فشرده‌سازی و آپلود... <span class="spinner"></span>';
+
+            try {
+                // Compress image
+                const compressedBase64 = await compressImage(file, 800, 0.7);
+                
                 await loadData();
                 const user = appData.users.find(u => u.phone === currentUser);
                 if (!user) return;
-                user.receipt = base64;
+                user.receipt = compressedBase64;
                 if (await saveData()) {
                     showFlash('رسید با موفقیت آپلود شد. منتظر تایید ادمین باشید.');
                     renderDashboard();
                 }
-            };
-            reader.readAsDataURL(file);
+            } catch (err) {
+                console.error(err);
+                showFlash('خطا در پردازش تصویر!', true);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '📤 آپلود رسید';
+                fileInput.value = ''; // clear input
+            }
         }
 
         // ============================================================
@@ -849,7 +908,6 @@
                 renderAdminPanel();
                 updateWheelFromParticipants();
                 showFlash(`کاربر ${user.name} تایید شد و کد ${code} به او اختصاص یافت.`);
-                // Auto draw if we have enough participants
                 if (participants.length >= REQUIRED_PARTICIPANTS) {
                     await performDraw();
                 }
@@ -1072,7 +1130,7 @@
         }
 
         // ============================================================
-        //  AUTO DRAW LOGIC (when participants >= REQUIRED)
+        //  AUTO DRAW LOGIC
         // ============================================================
         async function performDraw() {
             await loadData();
@@ -1104,7 +1162,6 @@
             };
 
             appData.history.push(result);
-            // Clear participants for next round
             participants = [];
             appData.participants = [];
 
@@ -1112,7 +1169,6 @@
             renderWinners(result.winners);
             showFlash(`🎊 قرعه‌کشی انجام شد! برندگان مشخص شدند.`);
 
-            // Spin wheel to show first winner
             if (wheelSegments.length > 0) {
                 const firstCode = result.winners[0].code;
                 const idx = wheelSegments.indexOf(firstCode);
