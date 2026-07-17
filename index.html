@@ -422,12 +422,13 @@
         <div id="page-wheel" class="page">
             <div class="countdown" id="participant-status">
                 ⏳ تعداد شرکت‌کنندگان: <span id="participant-count-display">۰</span> نفر
+                <span style="display:block; font-size:14px; color:#888;">(برای قرعه‌کشی به ۱۰ نفر نیاز است)</span>
             </div>
             <div class="wheel-wrapper">
                 <div class="pointer"></div>
                 <canvas id="wheelCanvas" width="400" height="400"></canvas>
                 <button class="btn" style="width:200px; margin-top:15px;" onclick="manualSpin()">🔄 بچرخان (تست)</button>
-                <p class="text-muted text-center" style="margin-top:5px;">(قرعه‌کشی خودکار با تکمیل ۳ نفر)</p>
+                <p class="text-muted text-center" style="margin-top:5px;">(قرعه‌کشی خودکار با تکمیل ۱۰ نفر)</p>
             </div>
 
             <div class="winners-list" id="winners-list">
@@ -504,6 +505,7 @@
         const BIN_ID = '6a5a730eda38895dfe6c2898';
         const API_KEY = '$2a$10$QvdPKuxFY1/1xMwItmT7F.R7AiUHc4zHYSY68SwqrIRhxC4N6sHAC';
         const BASE_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+        const REQUIRED_PARTICIPANTS = 10; // changed from 3 to 10
 
         // ============================================================
         //  STATE
@@ -513,7 +515,7 @@
         let adminClicks = 0;
         let wheelSegments = [];
         let isSpinning = false;
-        let participants = []; // list of phone numbers of approved users
+        let participants = [];
 
         // ============================================================
         //  DB HELPERS
@@ -637,9 +639,9 @@
                 phone,
                 password: pass,
                 secret: secret,
-                code: null, // code assigned later upon receipt approval
-                receipt: null, // base64 image
-                paid: false // approved by admin
+                code: null,
+                receipt: null,
+                paid: false
             });
 
             if (await saveData()) {
@@ -723,7 +725,6 @@
             document.getElementById('payment-status').textContent = `وضعیت: ${statusText}`;
             document.getElementById('user-code-display').textContent = `کد اختصاصی: ${user.code || '---'}`;
 
-            // Show receipt preview if exists
             const previewContainer = document.getElementById('receipt-preview-container');
             if (user.receipt) {
                 previewContainer.innerHTML = `<img src="${user.receipt}" class="receipt-preview" alt="رسید">`;
@@ -731,7 +732,6 @@
                 previewContainer.innerHTML = '';
             }
 
-            // Participation status
             const inPool = participants.includes(user.phone);
             document.getElementById('participation-status').textContent = inPool ?
                 '✅ شما در لیست شرکت‌کنندگان قرعه‌کشی هستید.' :
@@ -837,12 +837,10 @@
             if (!user) return;
             if (user.paid) return showFlash('قبلاً تایید شده است.', true);
 
-            // Generate unique code
             const code = generateUniqueCode(6);
             user.code = code;
             user.paid = true;
 
-            // Add to participants if not already
             if (!participants.includes(phone)) {
                 participants.push(phone);
             }
@@ -851,8 +849,8 @@
                 renderAdminPanel();
                 updateWheelFromParticipants();
                 showFlash(`کاربر ${user.name} تایید شد و کد ${code} به او اختصاص یافت.`);
-                // Check if we have 3 participants -> auto draw
-                if (participants.length >= 3) {
+                // Auto draw if we have enough participants
+                if (participants.length >= REQUIRED_PARTICIPANTS) {
                     await performDraw();
                 }
             }
@@ -864,7 +862,6 @@
             if (!user) return;
             user.paid = false;
             user.code = null;
-            // Remove from participants
             participants = participants.filter(p => p !== phone);
             if (await saveData()) {
                 renderAdminPanel();
@@ -920,7 +917,6 @@
             if (await saveData()) {
                 showFlash('تنظیمات ذخیره شد.');
                 renderDashboard();
-                // Update displayed telegram in auth page
                 document.getElementById('display-telegram-auth').textContent = appData.settings.telegramId;
             }
         }
@@ -950,8 +946,6 @@
         }
 
         function updateWheelFromParticipants() {
-            // Update wheel segments to reflect participants' codes (or names)
-            // We'll set wheel segments to the codes of participants
             const newSegments = [];
             participants.forEach(phone => {
                 const user = appData.users.find(u => u.phone === phone);
@@ -959,8 +953,6 @@
                     newSegments.push(user.code);
                 }
             });
-            // Keep any manual segments? The user asked that only approved users enter the wheel.
-            // So we overwrite wheelSegments with the participants' codes.
             appData.settings.wheelSegments = newSegments;
             wheelSegments = newSegments;
             saveData().then(() => {
@@ -1080,20 +1072,18 @@
         }
 
         // ============================================================
-        //  AUTO DRAW LOGIC (when participants >= 3)
+        //  AUTO DRAW LOGIC (when participants >= REQUIRED)
         // ============================================================
         async function performDraw() {
             await loadData();
-            if (participants.length < 3) {
-                showFlash('حداقل ۳ شرکت‌کننده نیاز است.', true);
+            if (participants.length < REQUIRED_PARTICIPANTS) {
+                showFlash(`حداقل ${REQUIRED_PARTICIPANTS} شرکت‌کننده نیاز است.`, true);
                 return;
             }
 
-            // Pick 3 winners randomly
             const shuffled = [...participants].sort(() => Math.random() - 0.5);
             const winners = shuffled.slice(0, 3);
 
-            // Get user details
             const winnerDetails = winners.map(phone => {
                 const user = appData.users.find(u => u.phone === phone);
                 return {
@@ -1117,11 +1107,6 @@
             // Clear participants for next round
             participants = [];
             appData.participants = [];
-            // Reset paid status? Usually we keep them paid but remove from pool.
-            // Optionally we can keep them paid but they are not in pool.
-            // We'll set paid=false for winners? No, they remain paid but can re-enter later.
-            // To allow re-entry, we keep paid=true but they are not in participants.
-            // So no change to paid status.
 
             await saveData();
             renderWinners(result.winners);
@@ -1144,7 +1129,6 @@
 
             updateParticipantDisplay();
             renderAdminPanel();
-            // Update wheel to remove participants (now empty)
             updateWheelFromParticipants();
         }
 
@@ -1224,21 +1208,16 @@
                     '<h1 style="color:red;">❌ اتصال به JSONBin برقرار نشد. لطفاً BIN_ID و API_KEY را بررسی کنید.</h1>';
                 return;
             }
-            // Ensure participants array exists
             if (!appData.participants) appData.participants = [];
             participants = appData.participants;
 
-            // Update wheel segments from participants
             updateWheelFromParticipants();
-
             drawWheel();
             loadHistory();
             updateParticipantDisplay();
 
-            // Set initial telegram id on auth page
             document.getElementById('display-telegram-auth').textContent = appData.settings.telegramId || '---';
 
-            // Check session
             const savedPhone = sessionStorage.getItem('lottery_user');
             if (savedPhone) {
                 const user = appData.users.find(u => u.phone === savedPhone);
@@ -1254,20 +1233,10 @@
                 }
             }
 
-            // Auto-check for draw if participants >= 3 (on load)
-            if (participants.length >= 3) {
+            if (participants.length >= REQUIRED_PARTICIPANTS) {
                 await performDraw();
             }
         }
-
-        // Override navigation to update participant display
-        const origSwitch = switchPage;
-        switchPage = function(pageId) {
-            origSwitch(pageId);
-            if (pageId === 'page-wheel') {
-                updateParticipantDisplay();
-            }
-        };
 
         init();
     </script>
