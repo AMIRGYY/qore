@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سامانه قرعه‌کشی</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        body {
+            background: #0a0a1a;
+            color: #eee;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(20, 20, 40, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #f7971e, #ffd200);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .nav-links button {
+            background: transparent;
+            border: 1px solid #444;
+            color: #ccc;
+            padding: 8px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+        .nav-links button:hover,
+        .nav-links button.active {
+            background: #ffd700;
+            color: #0a0a1a;
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+        .nav-links button.active {
+            font-weight: 900;
+        }
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 1px solid #2a2a4a;
+        }
+        .card h3 {
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: #1a1a30;
+            border: 1px solid #333;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        input:focus {
+            border-color: #ffd700;
+            outline: none;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+        .btn {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #0a0a1a;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            margin: 8px 0;
+        }
+        .btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+        .btn-danger {
+            background: #e74c3c;
+            color: #fff;
+        }
+        .btn-success {
+            background: #2ecc71;
+            color: #fff;
+        }
+        .btn-small {
+            width: auto;
+            padding: 8px 20px;
+            font-size: 13px;
+            display: inline-block;
+            margin: 5px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .text-gold {
+            color: #ffd700;
+        }
+        .text-muted {
+            color: #888;
+            font-size: 14px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mt-10 {
+            margin-top: 10px;
+        }
+        .mb-10 {
+            margin-bottom: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+        .table-wrap {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        th,
+        td {
+            padding: 8px 5px;
+            border-bottom: 1px solid #2a2a4a;
+            text-align: center;
+        }
+        th {
+            color: #ffd700;
+        }
+        .badge {
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .badge-paid {
+            background: #2ecc71;
+            color: #000;
+        }
+        .badge-pending {
+            background: #f39c12;
+            color: #000;
+        }
+        .badge-winner {
+            background: #ffd700;
+            color: #000;
+        }
+        .wheel-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #wheelCanvas {
+            max-width: 100%;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+            background: #1a1a30;
+            cursor: pointer;
+        }
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-top: 40px solid #ffd700;
+            filter: drop-shadow(0 0 10px #ffd700);
+            z-index: 10;
+        }
+        .winners-list {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #ffd70033;
+        }
+        .winner-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 15px;
+            border-bottom: 1px solid #333;
+            font-size: 16px;
+            align-items: center;
+        }
+        .winner-item.gold {
+            background: linear-gradient(90deg, #f7971e, #ffd200);
+            color: #000;
+            border-radius: 10px;
+            font-weight: 700;
+            margin: 5px 0;
+        }
+        .winner-item.silver {
+            border-right: 4px solid #bdc3c7;
+        }
+        .winner-item.bronze {
+            border-right: 4px solid #cd7f32;
+        }
+        .footer-click {
+            color: #333;
+            font-size: 12px;
+            cursor: pointer;
+            user-select: none;
+            transition: 0.3s;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .footer-click:hover {
+            color: #666;
+        }
+        @media (max-width: 600px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            #wheelCanvas {
+                width: 300px;
+                height: 300px;
+            }
+        }
+        .countdown {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffd700;
+            text-align: center;
+            padding: 10px;
+            background: #1a1a30;
+            border-radius: 15px;
+            margin: 15px 0;
+            border: 1px solid #ffd70044;
+        }
+        .flash-message {
+            background: #27ae60;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: 700;
+        }
+        .flash-error {
+            background: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">🎰 قرعه‌کشی شانس</div>
+            <div class="nav-links">
+                <button class="active" data-page="page-auth">خانه / ورود</button>
+                <button data-page="page-wheel">🎡 گردونه</button>
+                <button data-page="page-dashboard">📊 حساب من</button>
+            </div>
+        </div>
+
+        <!-- PAGE: AUTH -->
+        <div id="page-auth" class="page active">
+            <div class="card">
+                <h3>📜 قوانین مسابقه</h3>
+                <p>◀️ هر شرکت‌کننده باید مبلغ <strong class="text-gold">۱,۰۰۰,۰۰۰ تومان</strong> به شماره کارت درج شده واریز کند.</p>
+                <p>🏆 جوایز: <strong class="text-gold">نفر اول ۳ میلیون</strong> | <strong class="text-gold">نفر دوم ۲ میلیون</strong> | <strong class="text-gold">نفر سوم ۱.۵ میلیون</strong> تومان</p>
+                <p>⏰ قرعه‌کشی هر شب ساعت ۱۲ دقیقاً انجام می‌شود.</p>
+                <hr style="border-color:#333; margin:15px 0;">
+                <div id="auth-status" class="flash-message hidden"></div>
+                
+                <!-- Register -->
+                <div id="register-box">
+                    <h4>📝 ثبت‌نام جدید</h4>
+                    <div class="grid-2">
+                        <input type="text" id="reg-name" placeholder="نام">
+                        <input type="text" id="reg-last" placeholder="نام‌خانوادگی">
+                    </div>
+                    <input type="text" id="reg-phone" placeholder="شماره تلفن (مثال: 09121234567)">
+                    <input type="password" id="reg-pass" placeholder="رمز عبور">
+                    <input type="text" id="reg-secret" placeholder="عبارت امنیتی (برای بازیابی رمز)">
+                    <button class="btn" onclick="registerUser()">ثبت‌نام</button>
+                    <p class="text-muted text-center" style="margin-top:10px;">حساب دارید؟ <span class="text-gold" style="cursor:pointer;" onclick="toggleAuthForms('login')">وارد شوید</span></p>
+                </div>
+
+                <!-- Login -->
+                <div id="login-box" class="hidden">
+                    <h4>🔐 ورود</h4>
+                    <input type="text" id="login-phone" placeholder="شماره تلفن">
+                    <input type="password" id="login-pass" placeholder="رمز عبور">
+                    <button class="btn" onclick="loginUser()">ورود</button>
+                    <p class="text-muted text-center" style="margin-top:10px;">
+                        <span class="text-gold" style="cursor:pointer;" onclick="toggleAuthForms('forgot')">فراموشی رمز عبور</span> |
+                        <span class="text-gold" style="cursor:pointer;" onclick="toggleAuthForms('register')">ثبت‌نام</span>
+                    </p>
+                </div>
+
+                <!-- Forgot -->
+                <div id="forgot-box" class="hidden">
+                    <h4>🔑 بازیابی رمز</h4>
+                    <input type="text" id="forgot-phone" placeholder="شماره تلفن">
+                    <button class="btn" onclick="forgotPassword()">نمایش عبارت امنیتی</button>
+                    <div id="forgot-result" class="card" style="background:#222; margin-top:10px;"></div>
+                    <p class="text-muted text-center" style="margin-top:10px;">
+                        <span class="text-gold" style="cursor:pointer;" onclick="toggleAuthForms('login')">بازگشت به ورود</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: WHEEL -->
+        <div id="page-wheel" class="page">
+            <div class="countdown" id="countdown-timer">⏳ بارگذاری...</div>
+            <div class="wheel-wrapper">
+                <div class="pointer"></div>
+                <canvas id="wheelCanvas" width="400" height="400"></canvas>
+                <button class="btn" style="width:200px; margin-top:15px;" onclick="manualSpin()">🔄 بچرخان (تست)</button>
+                <p class="text-muted text-center" style="margin-top:5px;">(چرخش خودکار ساعت ۱۲ شب)</p>
+            </div>
+
+            <div class="winners-list" id="winners-list">
+                <h4 style="text-align:center; color:#ffd700;">🏆 برندگان آخرین قرعه‌کشی</h4>
+                <div id="winners-container">
+                    <p class="text-muted text-center">هنوز قرعه‌کشی انجام نشده است.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: DASHBOARD -->
+        <div id="page-dashboard" class="page">
+            <div class="card">
+                <h3>👤 پنل کاربری</h3>
+                <div id="user-info">
+                    <p>لطفاً ابتدا <strong>وارد</strong> شوید.</p>
+                </div>
+            </div>
+            <div class="card" id="payment-section">
+                <h3>💳 پرداخت و تایید</h3>
+                <p>شماره کارت: <strong class="text-gold" id="display-card">---</strong></p>
+                <p>ارسال رسید به آیدی: <strong class="text-gold" id="display-telegram">---</strong></p>
+                <textarea id="receipt-text" placeholder="لینک یا توضیحات رسید خود را وارد کنید..."></textarea>
+                <button class="btn" onclick="submitReceipt()">ارسال رسید برای تایید</button>
+                <p id="payment-status" class="text-muted mt-10">وضعیت: در انتظار تایید</p>
+            </div>
+            <div class="card">
+                <h3>🎫 کد قرعه‌کشی من</h3>
+                <p style="font-size:32px; font-weight:900; color:#ffd700;" id="user-code-display">---</p>
+                <p class="text-muted">این کد در گردونه ثبت می‌شود.</p>
+            </div>
+        </div>
+
+        <!-- ADMIN PANEL -->
+        <div id="admin-panel" class="card hidden" style="border:2px solid #e74c3c;">
+            <h3 style="color:#e74c3c;">⚙️ پنل مدیریت (مخفی)</h3>
+            <div class="grid-2">
+                <div>
+                    <h4>👥 کاربران</h4>
+                    <div class="table-wrap">
+                        <table id="admin-users-table">
+                            <thead><tr><th>نام</th><th>تلفن</th><th>کد</th><th>رمز</th><th>پرداخت</th><th>عملیات</th></tr></thead>
+                            <tbody id="admin-users-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <h4>🎡 تنظیمات گردونه</h4>
+                    <input type="text" id="admin-segment-input" placeholder="متن/کد جدید برای گردونه">
+                    <button class="btn btn-small btn-success" onclick="addSegment()">➕ اضافه به گردونه</button>
+                    <div id="segment-list" style="margin-top:10px; max-height:200px; overflow-y:auto; background:#111; padding:10px; border-radius:10px;"></div>
+                    <hr style="border-color:#333; margin:10px 0;">
+                    <h4>🏆 تنظیم جوایز</h4>
+                    <input type="number" id="admin-prize1" placeholder="جایزه اول">
+                    <input type="number" id="admin-prize2" placeholder="جایزه دوم">
+                    <input type="number" id="admin-prize3" placeholder="جایزه سوم">
+                    <input type="text" id="admin-card" placeholder="شماره کارت">
+                    <input type="text" id="admin-telegram" placeholder="آیدی تلگرام">
+                    <button class="btn" onclick="saveSettings()">ذخیره تنظیمات</button>
+                    <button class="btn btn-danger" onclick="clearAllData()" style="margin-top:10px;">🗑️ ریست کامل داده‌ها</button>
+                </div>
+            </div>
+            <p class="text-muted text-center" style="margin-top:10px;">تغییرات لحظه‌ای در دیتابیس ذخیره می‌شود.</p>
+        </div>
+
+        <div class="footer-click" onclick="adminClickCounter()">طراحی شده توسط ⚡ | کلیک مخفی (۵ بار)</div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  YOUR JSONBIN CONFIG (REPLACED)
+        // ============================================================
+        const BIN_ID = '6a5a730eda38895dfe6c2898';
+        const API_KEY = '$2a$10$QvdPKuxFY1/1xMwItmT7F.R7AiUHc4zHYSY68SwqrIRhxC4N6sHAC';
+        const BASE_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+
+        // ============================================================
+        //  GLOBAL STATE
+        // ============================================================
+        let appData = null;
+        let currentUser = null;
+        let adminClicks = 0;
+        let wheelSegments = [];
+        let isSpinning = false;
+        let drawTimeout = null;
+
+        // ============================================================
+        //  DATABASE HELPERS
+        // ============================================================
+        async function loadData() {
+            try {
+                const res = await fetch(BASE_URL, {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                if (!res.ok) throw new Error('Network error');
+                const json = await res.json();
+                appData = json.record;
+                if (!appData.users) appData.users = [];
+                if (!appData.settings) appData.settings = { prize1: 3000000, prize2: 2000000, prize3: 1500000,
+                        cardNumber: '6037-9912-3456-7890', telegramId: '@lottery_admin', wheelSegments: [] };
+                if (!appData.history) appData.history = [];
+                if (!appData.settings.wheelSegments) appData.settings.wheelSegments = [];
+                wheelSegments = appData.settings.wheelSegments || [];
+                return appData;
+            } catch (e) {
+                console.error(e);
+                showFlash('خطا در ارتباط با دیتابیس!', true);
+                return null;
+            }
+        }
+
+        async function saveData() {
+            if (!appData) return;
+            try {
+                const res = await fetch(BASE_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify(appData)
+                });
+                if (!res.ok) throw new Error('Save failed');
+                return true;
+            } catch (e) {
+                console.error(e);
+                showFlash('خطا در ذخیره دیتابیس!', true);
+                return false;
+            }
+        }
+
+        // ============================================================
+        //  UI HELPERS
+        // ============================================================
+        function showFlash(msg, isError = false) {
+            const el = document.getElementById('auth-status');
+            if (!el) return;
+            el.textContent = msg;
+            el.className = 'flash-message' + (isError ? ' flash-error' : '');
+            el.classList.remove('hidden');
+            setTimeout(() => el.classList.add('hidden'), 5000);
+        }
+
+        function toggleAuthForms(mode) {
+            document.getElementById('register-box').classList.toggle('hidden', mode !== 'register');
+            document.getElementById('login-box').classList.toggle('hidden', mode !== 'login');
+            document.getElementById('forgot-box').classList.toggle('hidden', mode !== 'forgot');
+        }
+
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-links button').forEach(b => {
+                b.classList.toggle('active', b.dataset.page === pageId);
+            });
+        }
+
+        // ============================================================
+        //  AUTH FUNCTIONS
+        // ============================================================
+        function generateCode() {
+            let code;
+            let exists = true;
+            while (exists) {
+                code = String(Math.floor(100 + Math.random() * 900));
+                exists = appData.users.some(u => u.code === code);
+            }
+            return code;
+        }
+
+        async function registerUser() {
+            await loadData();
+            const name = document.getElementById('reg-name').value.trim();
+            const last = document.getElementById('reg-last').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const pass = document.getElementById('reg-pass').value.trim();
+            const secret = document.getElementById('reg-secret').value.trim();
+
+            if (!name || !last || !phone || !pass || !secret) {
+                return showFlash('تمامی فیلدها را پر کنید!', true);
+            }
+            if (phone.length < 11) return showFlash('شماره تلفن صحیح وارد کنید!', true);
+            if (pass.length < 4) return showFlash('رمز عبور حداقل ۴ کاراکتر!', true);
+
+            if (appData.users.find(u => u.phone === phone)) {
+                return showFlash('این شماره قبلاً ثبت شده است!', true);
+            }
+
+            const code = generateCode();
+            appData.users.push({
+                name,
+                last,
+                phone,
+                password: pass,
+                secret: secret,
+                code: code,
+                paid: false,
+                receipt: null
+            });
+
+            if (await saveData()) {
+                showFlash('ثبت‌نام موفق! اکنون وارد شوید.');
+                toggleAuthForms('login');
+                document.getElementById('login-phone').value = phone;
+                document.getElementById('reg-name').value = '';
+                document.getElementById('reg-last').value = '';
+                document.getElementById('reg-phone').value = '';
+                document.getElementById('reg-pass').value = '';
+                document.getElementById('reg-secret').value = '';
+            }
+        }
+
+        async function loginUser() {
+            await loadData();
+            const phone = document.getElementById('login-phone').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+            const user = appData.users.find(u => u.phone === phone && u.password === pass);
+            if (!user) {
+                return showFlash('شماره یا رمز عبور اشتباه است!', true);
+            }
+            currentUser = phone;
+            document.getElementById('login-pass').value = '';
+            showFlash(`خوش آمدید ${user.name} ${user.last} ✅`);
+            switchPage('page-dashboard');
+            renderDashboard();
+            document.querySelectorAll('.nav-links button').forEach(b => {
+                b.classList.toggle('active', b.dataset.page === 'page-dashboard');
+            });
+            sessionStorage.setItem('lottery_user', phone);
+        }
+
+        async function forgotPassword() {
+            await loadData();
+            const phone = document.getElementById('forgot-phone').value.trim();
+            const user = appData.users.find(u => u.phone === phone);
+            const resultDiv = document.getElementById('forgot-result');
+            if (!user) {
+                resultDiv.innerHTML = '<p class="text-danger">کاربری با این شماره یافت نشد.</p>';
+                return;
+            }
+            resultDiv.innerHTML = `
+                <p><strong>عبارت امنیتی شما:</strong></p>
+                <p style="font-size:20px; background:#0a0a1a; padding:10px; border-radius:10px; text-align:center; color:#ffd700;">${user.secret}</p>
+                <p class="text-muted">رمز عبور شما: ${user.password}</p>
+            `;
+        }
+
+        function logout() {
+            sessionStorage.removeItem('lottery_user');
+            currentUser = null;
+            switchPage('page-auth');
+            document.querySelectorAll('.nav-links button').forEach(b => {
+                b.classList.toggle('active', b.dataset.page === 'page-auth');
+            });
+            showFlash('خارج شدید.');
+        }
+
+        // ============================================================
+        //  DASHBOARD
+        // ============================================================
+        function renderDashboard() {
+            const user = appData.users.find(u => u.phone === currentUser);
+            if (!user) {
+                document.getElementById('user-info').innerHTML = '<p>لطفاً وارد شوید.</p>';
+                return;
+            }
+            document.getElementById('user-info').innerHTML = `
+                <p><strong>نام:</strong> ${user.name} ${user.last}</p>
+                <p><strong>تلفن:</strong> ${user.phone}</p>
+                <p><strong>کد اختصاصی:</strong> <span style="font-size:24px; color:#ffd700;">${user.code}</span></p>
+                <p><strong>وضعیت پرداخت:</strong> ${user.paid ? '✅ تایید شده' : '⏳ در انتظار تایید'}</p>
+                <button class="btn btn-small btn-danger" onclick="logout()" style="width:auto;">خروج</button>
+            `;
+            document.getElementById('user-code-display').textContent = user.code;
+            document.getElementById('display-card').textContent = appData.settings.cardNumber || '---';
+            document.getElementById('display-telegram').textContent = appData.settings.telegramId || '---';
+            document.getElementById('payment-status').textContent = `وضعیت: ${user.paid ? '✅ تایید شده' : '⏳ در انتظار تایید'}`;
+            if (user.receipt) {
+                document.getElementById('receipt-text').value = user.receipt;
+            }
+        }
+
+        async function submitReceipt() {
+            if (!currentUser) return showFlash('وارد شوید!', true);
+            await loadData();
+            const user = appData.users.find(u => u.phone === currentUser);
+            if (!user) return;
+            const text = document.getElementById('receipt-text').value.trim();
+            if (!text) return showFlash('لطفاً رسید خود را وارد کنید.', true);
+            user.receipt = text;
+            if (await saveData()) {
+                showFlash('رسید شما ارسال شد. منتظر تایید ادمین باشید.');
+                renderDashboard();
+            }
+        }
+
+        // ============================================================
+        //  ADMIN PANEL
+        // ============================================================
+        function adminClickCounter() {
+            adminClicks++;
+            if (adminClicks >= 5) {
+                adminClicks = 0;
+                const pass = prompt('ورود به پنل مدیریت - رمز عبور را وارد کنید:');
+                if (pass === 'amiryp45') {
+                    document.getElementById('admin-panel').classList.remove('hidden');
+                    renderAdminPanel();
+                    showFlash('✅ به پنل مدیریت خوش آمدید');
+                } else {
+                    showFlash('❌ رمز عبور اشتباه است!', true);
+                }
+            }
+        }
+
+        async function renderAdminPanel() {
+            await loadData();
+            const tbody = document.getElementById('admin-users-body');
+            tbody.innerHTML = '';
+            appData.users.forEach((u, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${u.name} ${u.last}</td>
+                    <td>${u.phone}</td>
+                    <td><strong>${u.code}</strong></td>
+                    <td>${u.password}</td>
+                    <td>${u.paid ? '✅' : '❌'} ${u.receipt ? '📎' : ''}</td>
+                    <td>
+                        <button class="btn btn-small btn-success" onclick="togglePaid('${u.phone}')">${u.paid ? 'لغو' : 'تایید'}</button>
+                        <button class="btn btn-small btn-danger" onclick="deleteUser('${u.phone}')">حذف</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            renderSegmentList();
+            document.getElementById('admin-prize1').value = appData.settings.prize1 || '';
+            document.getElementById('admin-prize2').value = appData.settings.prize2 || '';
+            document.getElementById('admin-prize3').value = appData.settings.prize3 || '';
+            document.getElementById('admin-card').value = appData.settings.cardNumber || '';
+            document.getElementById('admin-telegram').value = appData.settings.telegramId || '';
+        }
+
+        function renderSegmentList() {
+            const container = document.getElementById('segment-list');
+            container.innerHTML = '';
+            wheelSegments.forEach((seg, i) => {
+                const div = document.createElement('div');
+                div.style.cssText =
+                    'display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #222;';
+                div.innerHTML = `
+                    <span>${seg}</span>
+                    <button class="btn btn-small btn-danger" onclick="removeSegment(${i})" style="width:auto; padding:2px 12px;">✖</button>
+                `;
+                container.appendChild(div);
+            });
+            if (wheelSegments.length === 0) {
+                container.innerHTML = '<p class="text-muted">هیچ بخشی به گردونه اضافه نشده است.</p>';
+            }
+        }
+
+        async function addSegment() {
+            const input = document.getElementById('admin-segment-input');
+            const val = input.value.trim();
+            if (!val) return showFlash('متن را وارد کنید.', true);
+            await loadData();
+            appData.settings.wheelSegments.push(val);
+            wheelSegments = appData.settings.wheelSegments;
+            if (await saveData()) {
+                input.value = '';
+                renderAdminPanel();
+                drawWheel();
+                showFlash('بخش جدید اضافه شد.');
+            }
+        }
+
+        async function removeSegment(index) {
+            await loadData();
+            appData.settings.wheelSegments.splice(index, 1);
+            wheelSegments = appData.settings.wheelSegments;
+            if (await saveData()) {
+                renderAdminPanel();
+                drawWheel();
+            }
+        }
+
+        async function togglePaid(phone) {
+            await loadData();
+            const user = appData.users.find(u => u.phone === phone);
+            if (!user) return;
+            user.paid = !user.paid;
+            if (await saveData()) {
+                renderAdminPanel();
+                showFlash(`وضعیت پرداخت ${user.name} تغییر کرد.`);
+            }
+        }
+
+        async function deleteUser(phone) {
+            if (!confirm('آیا از حذف این کاربر اطمینان دارید؟')) return;
+            await loadData();
+            appData.users = appData.users.filter(u => u.phone !== phone);
+            if (await saveData()) {
+                renderAdminPanel();
+                showFlash('کاربر حذف شد.');
+            }
+        }
+
+        async function saveSettings() {
+            await loadData();
+            appData.settings.prize1 = parseInt(document.getElementById('admin-prize1').value) || 3000000;
+            appData.settings.prize2 = parseInt(document.getElementById('admin-prize2').value) || 2000000;
+            appData.settings.prize3 = parseInt(document.getElementById('admin-prize3').value) || 1500000;
+            appData.settings.cardNumber = document.getElementById('admin-card').value.trim() || '6037-9912-3456-7890';
+            appData.settings.telegramId = document.getElementById('admin-telegram').value.trim() || '@lottery_admin';
+            if (await saveData()) {
+                showFlash('تنظیمات ذخیره شد.');
+                renderDashboard();
+            }
+        }
+
+        async function clearAllData() {
+            if (!confirm('⚠️ تمام داده‌ها (کاربران، تاریخچه، گردونه) پاک می‌شوند. ادامه؟')) return;
+            await loadData();
+            appData.users = [];
+            appData.history = [];
+            appData.settings.wheelSegments = [];
+            appData.lastDrawDate = null;
+            wheelSegments = [];
+            if (await saveData()) {
+                renderAdminPanel();
+                drawWheel();
+                showFlash('داده‌ها ریست شدند.');
+            }
+        }
+
+        // ============================================================
+        //  WHEEL (CANVAS)
+        // ============================================================
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        let currentRotation = 0;
+        let spinAnimationId = null;
+
+        function drawWheel() {
+            const segments = wheelSegments.length > 0 ? wheelSegments : ['بدون بخش'];
+            const count = segments.length;
+            const arc = (2 * Math.PI) / count;
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#A8E6CF', '#FF8A5C', '#6C5B7B', '#F8B195', '#355C7D', '#F67280',
+                '#C06C84'
+            ];
+
+            ctx.clearRect(0, 0, 400, 400);
+            ctx.save();
+            ctx.translate(200, 200);
+            ctx.rotate(currentRotation);
+
+            for (let i = 0; i < count; i++) {
+                const startAngle = i * arc;
+                const endAngle = startAngle + arc;
+
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, 190, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.rotate(startAngle + arc / 2);
+                ctx.translate(130, 0);
+                ctx.rotate(Math.PI / 2);
+                ctx.fillStyle = '#0a0a1a';
+                ctx.font = 'bold 14px Vazirmatn';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                const label = segments[i];
+                ctx.fillText(label.length > 10 ? label.substr(0, 8) + '..' : label, 0, 0);
+                ctx.restore();
+            }
+            ctx.restore();
+
+            ctx.beginPath();
+            ctx.arc(200, 200, 35, 0, 2 * Math.PI);
+            ctx.fillStyle = '#1a1a30';
+            ctx.fill();
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            ctx.fillStyle = '#ffd700';
+            ctx.font = 'bold 14px Vazirmatn';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('GO', 200, 200);
+        }
+
+        function getWinnerFromAngle(angle) {
+            const segments = wheelSegments.length > 0 ? wheelSegments : ['بدون بخش'];
+            const count = segments.length;
+            const arc = (2 * Math.PI) / count;
+            let raw = (angle + Math.PI / 2) % (2 * Math.PI);
+            if (raw < 0) raw += 2 * Math.PI;
+            const idx = Math.floor(raw / arc) % count;
+            return segments[idx] || 'نامشخص';
+        }
+
+        function spinWheel(targetRotation) {
+            if (isSpinning) return;
+            isSpinning = true;
+            const duration = 4000;
+            const startTime = performance.now();
+            const startRot = currentRotation;
+            const endRot = targetRotation;
+
+            function animate(time) {
+                const progress = Math.min((time - startTime) / duration, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+                currentRotation = startRot + (endRot - startRot) * ease;
+                drawWheel();
+                if (progress < 1) {
+                    spinAnimationId = requestAnimationFrame(animate);
+                } else {
+                    currentRotation = endRot;
+                    drawWheel();
+                    isSpinning = false;
+                    const winner = getWinnerFromAngle(endRot);
+                    showFlash(`🎉 برنده: ${winner} 🎉`);
+                }
+            }
+            spinAnimationId = requestAnimationFrame(animate);
+        }
+
+        function manualSpin() {
+            if (wheelSegments.length === 0) {
+                return showFlash('لطفاً ابتدا بخش‌ها را در پنل مدیریت اضافه کنید.', true);
+            }
+            const extraSpins = 5 + Math.random() * 10;
+            const target = currentRotation + (extraSpins * 2 * Math.PI) + (Math.random() * 2 * Math.PI);
+            spinWheel(target);
+        }
+
+        // ============================================================
+        //  AUTO DRAW
+        // ============================================================
+        function getIranTime() {
+            return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Tehran' }));
+        }
+
+        function isMidnight() {
+            const now = getIranTime();
+            return now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() < 5;
+        }
+
+        function formatIranDate() {
+            const now = getIranTime();
+            return now.toISOString().split('T')[0];
+        }
+
+        async function checkAndRunDraw() {
+            await loadData();
+            if (!appData) return;
+
+            const today = formatIranDate();
+            if (appData.lastDrawDate === today) {
+                updateCountdown();
+                return;
+            }
+
+            if (isMidnight()) {
+                await performDraw();
+            }
+            updateCountdown();
+        }
+
+        async function performDraw() {
+            await loadData();
+            const paidUsers = appData.users.filter(u => u.paid === true);
+            if (paidUsers.length === 0) {
+                showFlash('امشب هیچ کاربر واجد شرایطی برای قرعه‌کشی وجود ندارد.', true);
+                appData.lastDrawDate = formatIranDate();
+                await saveData();
+                return;
+            }
+
+            const shuffled = [...paidUsers].sort(() => Math.random() - 0.5);
+            const winners = shuffled.slice(0, 3);
+
+            const result = {
+                date: formatIranDate(),
+                winners: winners.map((u, idx) => ({
+                    place: idx + 1,
+                    name: u.name + ' ' + u.last,
+                    phone: u.phone,
+                    code: u.code
+                }))
+            };
+
+            appData.history.push(result);
+            appData.lastDrawDate = formatIranDate();
+            await saveData();
+            renderWinners(result.winners);
+            showFlash(`🎊 قرعه‌کشی انجام شد! برندگان مشخص شدند.`);
+
+            if (wheelSegments.length > 0) {
+                const winnerCode = winners[0].code;
+                const idx = wheelSegments.indexOf(winnerCode);
+                if (idx !== -1) {
+                    const arc = (2 * Math.PI) / wheelSegments.length;
+                    const targetAngle = (idx * arc) + arc / 2 - Math.PI / 2;
+                    const extra = 8 * 2 * Math.PI;
+                    const target = currentRotation + extra + (targetAngle - (currentRotation % (2 * Math.PI)));
+                    spinWheel(target);
+                } else {
+                    manualSpin();
+                }
+            }
+            updateCountdown();
+        }
+
+        function renderWinners(winners) {
+            const container = document.getElementById('winners-container');
+            if (!winners || winners.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center">هنوز قرعه‌کشی انجام نشده است.</p>';
+                return;
+            }
+            const placeEmojis = ['🥇', '🥈', '🥉'];
+            const placeClasses = ['gold', 'silver', 'bronze'];
+            let html = '';
+            winners.forEach((w, i) => {
+                const cls = placeClasses[i] || '';
+                html += `
+                    <div class="winner-item ${cls}">
+                        <span>${placeEmojis[i] || '🏅'} ${w.name}</span>
+                        <span>کد: <strong>${w.code}</strong> | تلفن: ${w.phone}</span>
+                        <span>${i === 0 ? '۳,۰۰۰,۰۰۰' : i === 1 ? '۲,۰۰۰,۰۰۰' : '۱,۵۰۰,۰۰۰'} تومان</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            if (winners.length > 0) {
+                setTimeout(() => {
+                    document.querySelector('.winners-list').style.borderColor = '#ffd700';
+                    setTimeout(() => document.querySelector('.winners-list').style.borderColor = '', 3000);
+                }, 100);
+            }
+        }
+
+        function loadHistory() {
+            if (!appData || !appData.history || appData.history.length === 0) return;
+            const last = appData.history[appData.history.length - 1];
+            if (last && last.winners) {
+                renderWinners(last.winners);
+            }
+        }
+
+        // ============================================================
+        //  COUNTDOWN
+        // ============================================================
+        function updateCountdown() {
+            const now = getIranTime();
+            let hours = 23 - now.getHours();
+            let minutes = 59 - now.getMinutes();
+            let seconds = 59 - now.getSeconds();
+            if (hours < 0) hours = 0;
+            if (minutes < 0) minutes = 0;
+            if (seconds < 0) seconds = 0;
+            const pad = (n) => String(n).padStart(2, '0');
+            document.getElementById('countdown-timer').innerHTML =
+                `⏳ زمان تا قرعه‌کشی بعدی: <strong>${pad(hours)}:${pad(minutes)}:${pad(seconds)}</strong>`;
+        }
+
+        // ============================================================
+        //  NAVIGATION
+        // ============================================================
+        document.querySelectorAll('.nav-links button').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const page = this.dataset.page;
+                switchPage(page);
+                if (page === 'page-dashboard') {
+                    if (!currentUser) {
+                        showFlash('لطفاً ابتدا وارد شوید.', true);
+                        switchPage('page-auth');
+                        return;
+                    }
+                    await loadData();
+                    renderDashboard();
+                }
+                if (page === 'page-wheel') {
+                    await loadData();
+                    drawWheel();
+                    loadHistory();
+                }
+                if (page === 'page-auth') {
+                    await loadData();
+                }
+            });
+        });
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+        async function init() {
+            await loadData();
+            if (!appData) {
+                document.body.innerHTML =
+                    '<h1 style="color:red;">❌ اتصال به JSONBin برقرار نشد. لطفاً BIN_ID و API_KEY را بررسی کنید.</h1>';
+                return;
+            }
+            drawWheel();
+            loadHistory();
+            updateCountdown();
+            setInterval(() => {
+                updateCountdown();
+                checkAndRunDraw();
+            }, 10000);
+
+            const savedPhone = sessionStorage.getItem('lottery_user');
+            if (savedPhone) {
+                const user = appData.users.find(u => u.phone === savedPhone);
+                if (user) {
+                    currentUser = savedPhone;
+                    switchPage('page-dashboard');
+                    renderDashboard();
+                    document.querySelectorAll('.nav-links button').forEach(b => {
+                        b.classList.toggle('active', b.dataset.page === 'page-dashboard');
+                    });
+                } else {
+                    sessionStorage.removeItem('lottery_user');
+                }
+            }
+            setTimeout(checkAndRunDraw, 5000);
+        }
+
+        init();
+    </script>
+</body>
+</html>
