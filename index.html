@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سامانه قرعه‌کشی</title>
+    <title>سامانه قرعه‌کشی شانس</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
         * {
@@ -22,7 +22,7 @@
             padding: 15px;
         }
         .container {
-            max-width: 900px;
+            max-width: 950px;
             width: 100%;
             background: rgba(20, 20, 40, 0.7);
             backdrop-filter: blur(12px);
@@ -190,6 +190,7 @@
             padding: 8px 5px;
             border-bottom: 1px solid #2a2a4a;
             text-align: center;
+            vertical-align: middle;
         }
         th {
             color: #ffd700;
@@ -255,6 +256,7 @@
             border-bottom: 1px solid #333;
             font-size: 16px;
             align-items: center;
+            flex-wrap: wrap;
         }
         .winner-item.gold {
             background: linear-gradient(90deg, #f7971e, #ffd200);
@@ -317,6 +319,41 @@
         .flash-error {
             background: #e74c3c;
         }
+        .receipt-thumb {
+            max-width: 60px;
+            max-height: 60px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid #444;
+        }
+        .receipt-preview {
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .status-approved {
+            background: #2ecc71;
+            color: #000;
+        }
+        .status-pending {
+            background: #f39c12;
+            color: #000;
+        }
+        .participant-count {
+            background: #2a2a4a;
+            padding: 8px 15px;
+            border-radius: 30px;
+            display: inline-block;
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -337,10 +374,11 @@
                 <h3>📜 قوانین مسابقه</h3>
                 <p>◀️ هر شرکت‌کننده باید مبلغ <strong class="text-gold">۱,۰۰۰,۰۰۰ تومان</strong> به شماره کارت درج شده واریز کند.</p>
                 <p>🏆 جوایز: <strong class="text-gold">نفر اول ۳ میلیون</strong> | <strong class="text-gold">نفر دوم ۲ میلیون</strong> | <strong class="text-gold">نفر سوم ۱.۵ میلیون</strong> تومان</p>
-                <p>⏰ قرعه‌کشی هر شب ساعت ۱۲ دقیقاً انجام می‌شود.</p>
+                <p>📌 پس از واریز، عکس رسید را در حساب کاربری خود آپلود کنید.</p>
+                <p>📱 رسید خود را به آیدی <strong class="text-gold" id="display-telegram-auth">---</strong> نیز ارسال کنید.</p>
                 <hr style="border-color:#333; margin:15px 0;">
                 <div id="auth-status" class="flash-message hidden"></div>
-                
+
                 <!-- Register -->
                 <div id="register-box">
                     <h4>📝 ثبت‌نام جدید</h4>
@@ -382,12 +420,14 @@
 
         <!-- PAGE: WHEEL -->
         <div id="page-wheel" class="page">
-            <div class="countdown" id="countdown-timer">⏳ بارگذاری...</div>
+            <div class="countdown" id="participant-status">
+                ⏳ تعداد شرکت‌کنندگان: <span id="participant-count-display">۰</span> نفر
+            </div>
             <div class="wheel-wrapper">
                 <div class="pointer"></div>
                 <canvas id="wheelCanvas" width="400" height="400"></canvas>
                 <button class="btn" style="width:200px; margin-top:15px;" onclick="manualSpin()">🔄 بچرخان (تست)</button>
-                <p class="text-muted text-center" style="margin-top:5px;">(چرخش خودکار ساعت ۱۲ شب)</p>
+                <p class="text-muted text-center" style="margin-top:5px;">(قرعه‌کشی خودکار با تکمیل ۳ نفر)</p>
             </div>
 
             <div class="winners-list" id="winners-list">
@@ -407,17 +447,18 @@
                 </div>
             </div>
             <div class="card" id="payment-section">
-                <h3>💳 پرداخت و تایید</h3>
+                <h3>💳 پرداخت و آپلود رسید</h3>
                 <p>شماره کارت: <strong class="text-gold" id="display-card">---</strong></p>
                 <p>ارسال رسید به آیدی: <strong class="text-gold" id="display-telegram">---</strong></p>
-                <textarea id="receipt-text" placeholder="لینک یا توضیحات رسید خود را وارد کنید..."></textarea>
-                <button class="btn" onclick="submitReceipt()">ارسال رسید برای تایید</button>
+                <input type="file" id="receipt-file" accept="image/*" style="background:transparent; border:none; padding:0;">
+                <button class="btn" onclick="uploadReceipt()">📤 آپلود رسید</button>
+                <div id="receipt-preview-container"></div>
                 <p id="payment-status" class="text-muted mt-10">وضعیت: در انتظار تایید</p>
+                <p id="user-code-display" class="text-muted">کد اختصاصی: ---</p>
             </div>
             <div class="card">
-                <h3>🎫 کد قرعه‌کشی من</h3>
-                <p style="font-size:32px; font-weight:900; color:#ffd700;" id="user-code-display">---</p>
-                <p class="text-muted">این کد در گردونه ثبت می‌شود.</p>
+                <h3>📋 وضعیت شرکت در قرعه‌کشی</h3>
+                <p id="participation-status">شما در لیست شرکت‌کنندگان نیستید.</p>
             </div>
         </div>
 
@@ -429,7 +470,7 @@
                     <h4>👥 کاربران</h4>
                     <div class="table-wrap">
                         <table id="admin-users-table">
-                            <thead><tr><th>نام</th><th>تلفن</th><th>کد</th><th>رمز</th><th>پرداخت</th><th>عملیات</th></tr></thead>
+                            <thead><tr><th>نام</th><th>تلفن</th><th>کد</th><th>رسید</th><th>وضعیت</th><th>عملیات</th></tr></thead>
                             <tbody id="admin-users-body"></tbody>
                         </table>
                     </div>
@@ -440,12 +481,12 @@
                     <button class="btn btn-small btn-success" onclick="addSegment()">➕ اضافه به گردونه</button>
                     <div id="segment-list" style="margin-top:10px; max-height:200px; overflow-y:auto; background:#111; padding:10px; border-radius:10px;"></div>
                     <hr style="border-color:#333; margin:10px 0;">
-                    <h4>🏆 تنظیم جوایز</h4>
+                    <h4>🏆 تنظیمات عمومی</h4>
                     <input type="number" id="admin-prize1" placeholder="جایزه اول">
                     <input type="number" id="admin-prize2" placeholder="جایزه دوم">
                     <input type="number" id="admin-prize3" placeholder="جایزه سوم">
                     <input type="text" id="admin-card" placeholder="شماره کارت">
-                    <input type="text" id="admin-telegram" placeholder="آیدی تلگرام">
+                    <input type="text" id="admin-telegram" placeholder="آیدی پیام‌رسان (تلگرام/روبیکا)">
                     <button class="btn" onclick="saveSettings()">ذخیره تنظیمات</button>
                     <button class="btn btn-danger" onclick="clearAllData()" style="margin-top:10px;">🗑️ ریست کامل داده‌ها</button>
                 </div>
@@ -458,24 +499,24 @@
 
     <script>
         // ============================================================
-        //  YOUR JSONBIN CONFIG (REPLACED)
+        //  CONFIG
         // ============================================================
         const BIN_ID = '6a5a730eda38895dfe6c2898';
         const API_KEY = '$2a$10$QvdPKuxFY1/1xMwItmT7F.R7AiUHc4zHYSY68SwqrIRhxC4N6sHAC';
         const BASE_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
         // ============================================================
-        //  GLOBAL STATE
+        //  STATE
         // ============================================================
         let appData = null;
         let currentUser = null;
         let adminClicks = 0;
         let wheelSegments = [];
         let isSpinning = false;
-        let drawTimeout = null;
+        let participants = []; // list of phone numbers of approved users
 
         // ============================================================
-        //  DATABASE HELPERS
+        //  DB HELPERS
         // ============================================================
         async function loadData() {
             try {
@@ -486,11 +527,19 @@
                 const json = await res.json();
                 appData = json.record;
                 if (!appData.users) appData.users = [];
-                if (!appData.settings) appData.settings = { prize1: 3000000, prize2: 2000000, prize3: 1500000,
-                        cardNumber: '6037-9912-3456-7890', telegramId: '@lottery_admin', wheelSegments: [] };
+                if (!appData.settings) appData.settings = {
+                    prize1: 3000000,
+                    prize2: 2000000,
+                    prize3: 1500000,
+                    cardNumber: '6037-9912-3456-7890',
+                    telegramId: '@lottery_admin',
+                    wheelSegments: []
+                };
                 if (!appData.history) appData.history = [];
                 if (!appData.settings.wheelSegments) appData.settings.wheelSegments = [];
+                if (!appData.participants) appData.participants = [];
                 wheelSegments = appData.settings.wheelSegments || [];
+                participants = appData.participants || [];
                 return appData;
             } catch (e) {
                 console.error(e);
@@ -501,6 +550,7 @@
 
         async function saveData() {
             if (!appData) return;
+            appData.participants = participants;
             try {
                 const res = await fetch(BASE_URL, {
                     method: 'PUT',
@@ -545,14 +595,19 @@
             });
         }
 
+        function maskPhone(phone) {
+            if (!phone || phone.length < 11) return phone;
+            return phone.slice(0, 4) + '***' + phone.slice(7);
+        }
+
         // ============================================================
-        //  AUTH FUNCTIONS
+        //  AUTH
         // ============================================================
-        function generateCode() {
+        function generateUniqueCode(length = 6) {
             let code;
             let exists = true;
             while (exists) {
-                code = String(Math.floor(100 + Math.random() * 900));
+                code = String(Math.floor(Math.random() * 10 ** length)).padStart(length, '0');
                 exists = appData.users.some(u => u.code === code);
             }
             return code;
@@ -576,16 +631,15 @@
                 return showFlash('این شماره قبلاً ثبت شده است!', true);
             }
 
-            const code = generateCode();
             appData.users.push({
                 name,
                 last,
                 phone,
                 password: pass,
                 secret: secret,
-                code: code,
-                paid: false,
-                receipt: null
+                code: null, // code assigned later upon receipt approval
+                receipt: null, // base64 image
+                paid: false // approved by admin
             });
 
             if (await saveData()) {
@@ -646,7 +700,7 @@
         }
 
         // ============================================================
-        //  DASHBOARD
+        //  DASHBOARD & RECEIPT UPLOAD
         // ============================================================
         function renderDashboard() {
             const user = appData.users.find(u => u.phone === currentUser);
@@ -657,31 +711,52 @@
             document.getElementById('user-info').innerHTML = `
                 <p><strong>نام:</strong> ${user.name} ${user.last}</p>
                 <p><strong>تلفن:</strong> ${user.phone}</p>
-                <p><strong>کد اختصاصی:</strong> <span style="font-size:24px; color:#ffd700;">${user.code}</span></p>
                 <p><strong>وضعیت پرداخت:</strong> ${user.paid ? '✅ تایید شده' : '⏳ در انتظار تایید'}</p>
+                <p><strong>کد اختصاصی:</strong> <span style="font-size:24px; color:#ffd700;">${user.code || '---'}</span></p>
                 <button class="btn btn-small btn-danger" onclick="logout()" style="width:auto;">خروج</button>
             `;
-            document.getElementById('user-code-display').textContent = user.code;
             document.getElementById('display-card').textContent = appData.settings.cardNumber || '---';
             document.getElementById('display-telegram').textContent = appData.settings.telegramId || '---';
-            document.getElementById('payment-status').textContent = `وضعیت: ${user.paid ? '✅ تایید شده' : '⏳ در انتظار تایید'}`;
+            document.getElementById('display-telegram-auth').textContent = appData.settings.telegramId || '---';
+
+            const statusText = user.paid ? '✅ تایید شده' : '⏳ در انتظار تایید';
+            document.getElementById('payment-status').textContent = `وضعیت: ${statusText}`;
+            document.getElementById('user-code-display').textContent = `کد اختصاصی: ${user.code || '---'}`;
+
+            // Show receipt preview if exists
+            const previewContainer = document.getElementById('receipt-preview-container');
             if (user.receipt) {
-                document.getElementById('receipt-text').value = user.receipt;
+                previewContainer.innerHTML = `<img src="${user.receipt}" class="receipt-preview" alt="رسید">`;
+            } else {
+                previewContainer.innerHTML = '';
             }
+
+            // Participation status
+            const inPool = participants.includes(user.phone);
+            document.getElementById('participation-status').textContent = inPool ?
+                '✅ شما در لیست شرکت‌کنندگان قرعه‌کشی هستید.' :
+                '❌ شما در لیست شرکت‌کنندگان نیستید.';
         }
 
-        async function submitReceipt() {
+        async function uploadReceipt() {
             if (!currentUser) return showFlash('وارد شوید!', true);
-            await loadData();
-            const user = appData.users.find(u => u.phone === currentUser);
-            if (!user) return;
-            const text = document.getElementById('receipt-text').value.trim();
-            if (!text) return showFlash('لطفاً رسید خود را وارد کنید.', true);
-            user.receipt = text;
-            if (await saveData()) {
-                showFlash('رسید شما ارسال شد. منتظر تایید ادمین باشید.');
-                renderDashboard();
-            }
+            const fileInput = document.getElementById('receipt-file');
+            const file = fileInput.files[0];
+            if (!file) return showFlash('لطفاً یک عکس انتخاب کنید.', true);
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const base64 = e.target.result;
+                await loadData();
+                const user = appData.users.find(u => u.phone === currentUser);
+                if (!user) return;
+                user.receipt = base64;
+                if (await saveData()) {
+                    showFlash('رسید با موفقیت آپلود شد. منتظر تایید ادمین باشید.');
+                    renderDashboard();
+                }
+            };
+            reader.readAsDataURL(file);
         }
 
         // ============================================================
@@ -706,17 +781,23 @@
             await loadData();
             const tbody = document.getElementById('admin-users-body');
             tbody.innerHTML = '';
-            appData.users.forEach((u, idx) => {
+            appData.users.forEach((u) => {
                 const tr = document.createElement('tr');
+                const receiptHtml = u.receipt ?
+                    `<img src="${u.receipt}" class="receipt-thumb" onclick="window.open('${u.receipt}','_blank')">` :
+                    '---';
+                const statusClass = u.paid ? 'status-approved' : 'status-pending';
+                const statusText = u.paid ? 'تایید شده' : 'در انتظار';
                 tr.innerHTML = `
                     <td>${u.name} ${u.last}</td>
                     <td>${u.phone}</td>
-                    <td><strong>${u.code}</strong></td>
-                    <td>${u.password}</td>
-                    <td>${u.paid ? '✅' : '❌'} ${u.receipt ? '📎' : ''}</td>
+                    <td>${u.code || '---'}</td>
+                    <td>${receiptHtml}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                     <td>
-                        <button class="btn btn-small btn-success" onclick="togglePaid('${u.phone}')">${u.paid ? 'لغو' : 'تایید'}</button>
-                        <button class="btn btn-small btn-danger" onclick="deleteUser('${u.phone}')">حذف</button>
+                        ${!u.paid && u.receipt ? `<button class="btn btn-small btn-success" onclick="approveReceipt('${u.phone}')">✅ تایید و کد</button>` : ''}
+                        ${u.paid ? `<button class="btn btn-small btn-danger" onclick="revokeApproval('${u.phone}')">لغو تایید</button>` : ''}
+                        <button class="btn btn-small btn-danger" onclick="deleteUser('${u.phone}')">🗑️</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -728,6 +809,8 @@
             document.getElementById('admin-prize3').value = appData.settings.prize3 || '';
             document.getElementById('admin-card').value = appData.settings.cardNumber || '';
             document.getElementById('admin-telegram').value = appData.settings.telegramId || '';
+
+            updateParticipantDisplay();
         }
 
         function renderSegmentList() {
@@ -745,6 +828,60 @@
             });
             if (wheelSegments.length === 0) {
                 container.innerHTML = '<p class="text-muted">هیچ بخشی به گردونه اضافه نشده است.</p>';
+            }
+        }
+
+        async function approveReceipt(phone) {
+            await loadData();
+            const user = appData.users.find(u => u.phone === phone);
+            if (!user) return;
+            if (user.paid) return showFlash('قبلاً تایید شده است.', true);
+
+            // Generate unique code
+            const code = generateUniqueCode(6);
+            user.code = code;
+            user.paid = true;
+
+            // Add to participants if not already
+            if (!participants.includes(phone)) {
+                participants.push(phone);
+            }
+
+            if (await saveData()) {
+                renderAdminPanel();
+                updateWheelFromParticipants();
+                showFlash(`کاربر ${user.name} تایید شد و کد ${code} به او اختصاص یافت.`);
+                // Check if we have 3 participants -> auto draw
+                if (participants.length >= 3) {
+                    await performDraw();
+                }
+            }
+        }
+
+        async function revokeApproval(phone) {
+            await loadData();
+            const user = appData.users.find(u => u.phone === phone);
+            if (!user) return;
+            user.paid = false;
+            user.code = null;
+            // Remove from participants
+            participants = participants.filter(p => p !== phone);
+            if (await saveData()) {
+                renderAdminPanel();
+                updateWheelFromParticipants();
+                showFlash(`تایید کاربر ${user.name} لغو شد.`);
+            }
+        }
+
+        async function deleteUser(phone) {
+            if (!confirm('آیا از حذف این کاربر اطمینان دارید؟')) return;
+            await loadData();
+            appData.users = appData.users.filter(u => u.phone !== phone);
+            participants = participants.filter(p => p !== phone);
+            if (await saveData()) {
+                renderAdminPanel();
+                updateWheelFromParticipants();
+                showFlash('کاربر حذف شد.');
             }
         }
 
@@ -773,27 +910,6 @@
             }
         }
 
-        async function togglePaid(phone) {
-            await loadData();
-            const user = appData.users.find(u => u.phone === phone);
-            if (!user) return;
-            user.paid = !user.paid;
-            if (await saveData()) {
-                renderAdminPanel();
-                showFlash(`وضعیت پرداخت ${user.name} تغییر کرد.`);
-            }
-        }
-
-        async function deleteUser(phone) {
-            if (!confirm('آیا از حذف این کاربر اطمینان دارید؟')) return;
-            await loadData();
-            appData.users = appData.users.filter(u => u.phone !== phone);
-            if (await saveData()) {
-                renderAdminPanel();
-                showFlash('کاربر حذف شد.');
-            }
-        }
-
         async function saveSettings() {
             await loadData();
             appData.settings.prize1 = parseInt(document.getElementById('admin-prize1').value) || 3000000;
@@ -804,6 +920,8 @@
             if (await saveData()) {
                 showFlash('تنظیمات ذخیره شد.');
                 renderDashboard();
+                // Update displayed telegram in auth page
+                document.getElementById('display-telegram-auth').textContent = appData.settings.telegramId;
             }
         }
 
@@ -813,13 +931,42 @@
             appData.users = [];
             appData.history = [];
             appData.settings.wheelSegments = [];
-            appData.lastDrawDate = null;
+            appData.participants = [];
+            participants = [];
             wheelSegments = [];
+            appData.lastDrawDate = null;
             if (await saveData()) {
                 renderAdminPanel();
                 drawWheel();
                 showFlash('داده‌ها ریست شدند.');
             }
+        }
+
+        // ============================================================
+        //  PARTICIPANTS & WHEEL UPDATE
+        // ============================================================
+        function updateParticipantDisplay() {
+            document.getElementById('participant-count-display').textContent = participants.length;
+        }
+
+        function updateWheelFromParticipants() {
+            // Update wheel segments to reflect participants' codes (or names)
+            // We'll set wheel segments to the codes of participants
+            const newSegments = [];
+            participants.forEach(phone => {
+                const user = appData.users.find(u => u.phone === phone);
+                if (user && user.code) {
+                    newSegments.push(user.code);
+                }
+            });
+            // Keep any manual segments? The user asked that only approved users enter the wheel.
+            // So we overwrite wheelSegments with the participants' codes.
+            appData.settings.wheelSegments = newSegments;
+            wheelSegments = newSegments;
+            saveData().then(() => {
+                drawWheel();
+                renderAdminPanel();
+            });
         }
 
         // ============================================================
@@ -831,7 +978,7 @@
         let spinAnimationId = null;
 
         function drawWheel() {
-            const segments = wheelSegments.length > 0 ? wheelSegments : ['بدون بخش'];
+            const segments = wheelSegments.length > 0 ? wheelSegments : ['بدون شرکت‌کننده'];
             const count = segments.length;
             const arc = (2 * Math.PI) / count;
             const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#A8E6CF', '#FF8A5C', '#6C5B7B', '#F8B195', '#355C7D', '#F67280',
@@ -886,7 +1033,7 @@
         }
 
         function getWinnerFromAngle(angle) {
-            const segments = wheelSegments.length > 0 ? wheelSegments : ['بدون بخش'];
+            const segments = wheelSegments.length > 0 ? wheelSegments : ['بدون شرکت‌کننده'];
             const count = segments.length;
             const arc = (2 * Math.PI) / count;
             let raw = (angle + Math.PI / 2) % (2 * Math.PI);
@@ -895,7 +1042,7 @@
             return segments[idx] || 'نامشخص';
         }
 
-        function spinWheel(targetRotation) {
+        function spinWheel(targetRotation, callback) {
             if (isSpinning) return;
             isSpinning = true;
             const duration = 4000;
@@ -914,8 +1061,7 @@
                     currentRotation = endRot;
                     drawWheel();
                     isSpinning = false;
-                    const winner = getWinnerFromAngle(endRot);
-                    showFlash(`🎉 برنده: ${winner} 🎉`);
+                    if (callback) callback();
                 }
             }
             spinAnimationId = requestAnimationFrame(animate);
@@ -923,78 +1069,68 @@
 
         function manualSpin() {
             if (wheelSegments.length === 0) {
-                return showFlash('لطفاً ابتدا بخش‌ها را در پنل مدیریت اضافه کنید.', true);
+                return showFlash('هیچ شرکت‌کننده‌ای در گردونه وجود ندارد!', true);
             }
             const extraSpins = 5 + Math.random() * 10;
             const target = currentRotation + (extraSpins * 2 * Math.PI) + (Math.random() * 2 * Math.PI);
-            spinWheel(target);
+            spinWheel(target, () => {
+                const winner = getWinnerFromAngle(currentRotation);
+                showFlash(`🎉 برنده: ${winner} 🎉`);
+            });
         }
 
         // ============================================================
-        //  AUTO DRAW
+        //  AUTO DRAW LOGIC (when participants >= 3)
         // ============================================================
-        function getIranTime() {
-            return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Tehran' }));
-        }
-
-        function isMidnight() {
-            const now = getIranTime();
-            return now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() < 5;
-        }
-
-        function formatIranDate() {
-            const now = getIranTime();
-            return now.toISOString().split('T')[0];
-        }
-
-        async function checkAndRunDraw() {
-            await loadData();
-            if (!appData) return;
-
-            const today = formatIranDate();
-            if (appData.lastDrawDate === today) {
-                updateCountdown();
-                return;
-            }
-
-            if (isMidnight()) {
-                await performDraw();
-            }
-            updateCountdown();
-        }
-
         async function performDraw() {
             await loadData();
-            const paidUsers = appData.users.filter(u => u.paid === true);
-            if (paidUsers.length === 0) {
-                showFlash('امشب هیچ کاربر واجد شرایطی برای قرعه‌کشی وجود ندارد.', true);
-                appData.lastDrawDate = formatIranDate();
-                await saveData();
+            if (participants.length < 3) {
+                showFlash('حداقل ۳ شرکت‌کننده نیاز است.', true);
                 return;
             }
 
-            const shuffled = [...paidUsers].sort(() => Math.random() - 0.5);
+            // Pick 3 winners randomly
+            const shuffled = [...participants].sort(() => Math.random() - 0.5);
             const winners = shuffled.slice(0, 3);
 
+            // Get user details
+            const winnerDetails = winners.map(phone => {
+                const user = appData.users.find(u => u.phone === phone);
+                return {
+                    phone: phone,
+                    name: user ? user.name + ' ' + user.last : 'ناشناس',
+                    code: user ? user.code : '---'
+                };
+            });
+
             const result = {
-                date: formatIranDate(),
-                winners: winners.map((u, idx) => ({
+                date: new Date().toISOString(),
+                winners: winnerDetails.map((w, idx) => ({
                     place: idx + 1,
-                    name: u.name + ' ' + u.last,
-                    phone: u.phone,
-                    code: u.code
+                    name: w.name,
+                    phone: w.phone,
+                    code: w.code
                 }))
             };
 
             appData.history.push(result);
-            appData.lastDrawDate = formatIranDate();
+            // Clear participants for next round
+            participants = [];
+            appData.participants = [];
+            // Reset paid status? Usually we keep them paid but remove from pool.
+            // Optionally we can keep them paid but they are not in pool.
+            // We'll set paid=false for winners? No, they remain paid but can re-enter later.
+            // To allow re-entry, we keep paid=true but they are not in participants.
+            // So no change to paid status.
+
             await saveData();
             renderWinners(result.winners);
             showFlash(`🎊 قرعه‌کشی انجام شد! برندگان مشخص شدند.`);
 
+            // Spin wheel to show first winner
             if (wheelSegments.length > 0) {
-                const winnerCode = winners[0].code;
-                const idx = wheelSegments.indexOf(winnerCode);
+                const firstCode = result.winners[0].code;
+                const idx = wheelSegments.indexOf(firstCode);
                 if (idx !== -1) {
                     const arc = (2 * Math.PI) / wheelSegments.length;
                     const targetAngle = (idx * arc) + arc / 2 - Math.PI / 2;
@@ -1005,7 +1141,11 @@
                     manualSpin();
                 }
             }
-            updateCountdown();
+
+            updateParticipantDisplay();
+            renderAdminPanel();
+            // Update wheel to remove participants (now empty)
+            updateWheelFromParticipants();
         }
 
         function renderWinners(winners) {
@@ -1019,10 +1159,11 @@
             let html = '';
             winners.forEach((w, i) => {
                 const cls = placeClasses[i] || '';
+                const maskedPhone = maskPhone(w.phone);
                 html += `
                     <div class="winner-item ${cls}">
                         <span>${placeEmojis[i] || '🏅'} ${w.name}</span>
-                        <span>کد: <strong>${w.code}</strong> | تلفن: ${w.phone}</span>
+                        <span>کد: <strong>${w.code}</strong> | تلفن: ${maskedPhone}</span>
                         <span>${i === 0 ? '۳,۰۰۰,۰۰۰' : i === 1 ? '۲,۰۰۰,۰۰۰' : '۱,۵۰۰,۰۰۰'} تومان</span>
                     </div>
                 `;
@@ -1045,22 +1186,6 @@
         }
 
         // ============================================================
-        //  COUNTDOWN
-        // ============================================================
-        function updateCountdown() {
-            const now = getIranTime();
-            let hours = 23 - now.getHours();
-            let minutes = 59 - now.getMinutes();
-            let seconds = 59 - now.getSeconds();
-            if (hours < 0) hours = 0;
-            if (minutes < 0) minutes = 0;
-            if (seconds < 0) seconds = 0;
-            const pad = (n) => String(n).padStart(2, '0');
-            document.getElementById('countdown-timer').innerHTML =
-                `⏳ زمان تا قرعه‌کشی بعدی: <strong>${pad(hours)}:${pad(minutes)}:${pad(seconds)}</strong>`;
-        }
-
-        // ============================================================
         //  NAVIGATION
         // ============================================================
         document.querySelectorAll('.nav-links button').forEach(btn => {
@@ -1080,9 +1205,11 @@
                     await loadData();
                     drawWheel();
                     loadHistory();
+                    updateParticipantDisplay();
                 }
                 if (page === 'page-auth') {
                     await loadData();
+                    document.getElementById('display-telegram-auth').textContent = appData.settings.telegramId || '---';
                 }
             });
         });
@@ -1097,14 +1224,21 @@
                     '<h1 style="color:red;">❌ اتصال به JSONBin برقرار نشد. لطفاً BIN_ID و API_KEY را بررسی کنید.</h1>';
                 return;
             }
+            // Ensure participants array exists
+            if (!appData.participants) appData.participants = [];
+            participants = appData.participants;
+
+            // Update wheel segments from participants
+            updateWheelFromParticipants();
+
             drawWheel();
             loadHistory();
-            updateCountdown();
-            setInterval(() => {
-                updateCountdown();
-                checkAndRunDraw();
-            }, 10000);
+            updateParticipantDisplay();
 
+            // Set initial telegram id on auth page
+            document.getElementById('display-telegram-auth').textContent = appData.settings.telegramId || '---';
+
+            // Check session
             const savedPhone = sessionStorage.getItem('lottery_user');
             if (savedPhone) {
                 const user = appData.users.find(u => u.phone === savedPhone);
@@ -1119,8 +1253,21 @@
                     sessionStorage.removeItem('lottery_user');
                 }
             }
-            setTimeout(checkAndRunDraw, 5000);
+
+            // Auto-check for draw if participants >= 3 (on load)
+            if (participants.length >= 3) {
+                await performDraw();
+            }
         }
+
+        // Override navigation to update participant display
+        const origSwitch = switchPage;
+        switchPage = function(pageId) {
+            origSwitch(pageId);
+            if (pageId === 'page-wheel') {
+                updateParticipantDisplay();
+            }
+        };
 
         init();
     </script>
