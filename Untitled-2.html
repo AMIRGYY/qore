@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 قرعه‌کشی خوش‌شانسی</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ============================================
+           استایل کلی - حس خوشبختی و اعتماد
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazir', 'Tahoma', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #fef9f0 0%, #fdf6e3 100%);
+            color: #2d1b0e;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* پس‌زمینه دایره‌های شناور شاد */
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: none;
+        }
+        body::before {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #ffd700, transparent);
+            top: -100px;
+            right: -100px;
+        }
+        body::after {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #ffb347, transparent);
+            bottom: -80px;
+            left: -80px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============================================
+           هدر - گرم و صمیمی
+           ============================================ */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 40px;
+            box-shadow: 0 8px 32px rgba(255, 215, 0, 0.15);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            transition: all 0.3s;
+        }
+
+        header:hover {
+            box-shadow: 0 12px 40px rgba(255, 215, 0, 0.25);
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        header .logo i {
+            font-size: 2.2rem;
+            color: #f39c12;
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
+            }
+            50% {
+                transform: scale(1.08);
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
+            }
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        nav a,
+        nav button {
+            color: #5a3e2b;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: all 0.3s;
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        nav a:hover,
+        nav button:hover {
+            background: #ffd700;
+            color: #2d1b0e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        nav a i,
+        nav button i {
+            font-size: 1rem;
+        }
+
+        #logoutBtn {
+            color: #e74c3c;
+        }
+        #logoutBtn:hover {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        /* ============================================
+           بخش‌ها - کارت‌های شیشه‌ای
+           ============================================ */
+        .page {
+            display: none;
+            animation: fadeUp 0.6s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 28px;
+            margin: 25px 0;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s;
+        }
+
+        section:hover {
+            box-shadow: 0 12px 40px rgba(255, 215, 0, 0.08);
+        }
+
+        h2 {
+            color: #2d1b0e;
+            font-size: 1.7rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-right: 5px solid #f39c12;
+            padding-right: 18px;
+        }
+
+        h2 i {
+            color: #f39c12;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: #2d1b0e;
+            margin: 15px 0 10px;
+            font-size: 1.2rem;
+        }
+
+        /* ============================================
+           قوانین - با چک‌باکس
+           ============================================ */
+        .rules-box {
+            background: rgba(255, 248, 235, 0.7);
+            padding: 22px;
+            border-radius: 20px;
+            line-height: 2.2;
+            border-right: 4px solid #f1c40f;
+        }
+
+        .rules-box p {
+            padding: 6px 0;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rules-box p:last-child {
+            border-bottom: none;
+        }
+
+        .rules-box .highlight {
+            color: #e67e22;
+            font-weight: 800;
+            background: rgba(255, 215, 0, 0.15);
+            padding: 0 10px;
+            border-radius: 8px;
+        }
+
+        .rules-box i {
+            color: #f39c12;
+            width: 24px;
+            text-align: center;
+        }
+
+        .accept-rule {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 18px 0 10px;
+            padding: 12px 18px;
+            background: rgba(46, 204, 113, 0.08);
+            border-radius: 16px;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            transition: all 0.3s;
+        }
+
+        .accept-rule:hover {
+            background: rgba(46, 204, 113, 0.15);
+        }
+
+        .accept-rule input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            accent-color: #f39c12;
+            cursor: pointer;
+            transform: scale(1.1);
+        }
+
+        .accept-rule label {
+            font-weight: 600;
+            color: #2d1b0e;
+            cursor: pointer;
+            font-size: 1.05rem;
+        }
+
+        .accept-rule label i {
+            color: #27ae60;
+            margin-left: 8px;
+        }
+
+        /* ============================================
+           فرم‌ها - زیبا و دوستانه
+           ============================================ */
+        .form-group {
+            margin: 18px 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #4a3222;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group label i {
+            margin-left: 8px;
+            color: #f39c12;
+            width: 20px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 16px;
+            border: 2px solid #e8ddd0;
+            background: rgba(255, 255, 255, 0.7);
+            color: #2d1b0e;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #f39c12;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.15);
+            background: #fff;
+        }
+
+        .form-group input::placeholder {
+            color: #b8a392;
+        }
+
+        /* ============================================
+           دکمه‌ها - شاد و پرانرژی
+           ============================================ */
+        .btn,
+        button {
+            background: linear-gradient(135deg, #f7dc6f, #f1c40f);
+            color: #2d1b0e;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(241, 196, 15, 0.25);
+        }
+
+        .btn:hover,
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(241, 196, 15, 0.35);
+        }
+
+        .btn:disabled,
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-secondary {
+            background: #ecf0f1;
+            color: #2d1b0e;
+            box-shadow: none;
+        }
+        .btn-secondary:hover {
+            background: #d5dbdb;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #58d68d, #2ecc71);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+        }
+        .btn-success:hover {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c0392b, #a93226);
+        }
+
+        .btn-spin {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: #fff;
+            font-size: 1.3rem;
+            padding: 16px 40px;
+            width: auto;
+            margin: 20px auto;
+            box-shadow: 0 6px 25px rgba(243, 156, 18, 0.4);
+        }
+
+        .btn-spin:hover {
+            box-shadow: 0 10px 35px rgba(243, 156, 18, 0.5);
+        }
+
+        .btn-glow {
+            animation: glowPulse 2s infinite;
+        }
+        @keyframes glowPulse {
+            0%,
+            100% {
+                box-shadow: 0 4px 20px rgba(241, 196, 15, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 40px rgba(241, 196, 15, 0.6);
+            }
+        }
+
+        /* ============================================
+           پیام‌ها
+           ============================================ */
+        .message {
+            margin-top: 18px;
+            padding: 14px 18px;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .message.success {
+            background: rgba(46, 204, 113, 0.12);
+            color: #27ae60;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+        }
+
+        .message.error {
+            background: rgba(231, 76, 60, 0.10);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.15);
+        }
+
+        .message.info {
+            background: rgba(52, 152, 219, 0.10);
+            color: #2980b9;
+            border: 1px solid rgba(52, 152, 219, 0.15);
+        }
+
+        /* ============================================
+           اطلاعات بانکی
+           ============================================ */
+        .bank-box {
+            background: linear-gradient(135deg, #fef9f0, #fdf2e3);
+            padding: 22px;
+            border-radius: 20px;
+            border: 1px solid #f1c40f44;
+        }
+
+        .bank-card {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2d1b0e;
+            letter-spacing: 4px;
+            background: rgba(255, 215, 0, 0.10);
+            padding: 12px 24px;
+            border-radius: 16px;
+            display: inline-block;
+            margin: 10px 0;
+            border: 2px dashed #f1c40f66;
+            direction: ltr;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .contact-info .contact-item {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 8px 18px;
+            border-radius: 30px;
+            border: 1px solid #e8ddd0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .contact-info .contact-item i {
+            color: #f39c12;
+        }
+
+        /* ============================================
+           پروفایل کاربر (در صفحه اصلی)
+           ============================================ */
+        .user-profile {
+            background: rgba(255, 248, 235, 0.5);
+            padding: 22px;
+            border-radius: 20px;
+            margin-top: 20px;
+            border: 2px solid #f1c40f44;
+            display: none;
+        }
+
+        .user-profile.active {
+            display: block;
+            animation: fadeUp 0.5s ease;
+        }
+
+        .user-profile .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .user-profile .profile-header i {
+            font-size: 2.5rem;
+            color: #f39c12;
+        }
+
+        .user-profile .profile-header h3 {
+            margin: 0;
+            color: #2d1b0e;
+        }
+
+        .user-profile .profile-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .user-profile .profile-row:last-child {
+            border-bottom: none;
+        }
+
+        .user-profile .profile-row .label {
+            font-weight: 600;
+            color: #5a3e2b;
+        }
+
+        .user-profile .profile-row .value {
+            font-weight: 700;
+            color: #2d1b0e;
+        }
+
+        .user-profile .profile-row .value.code {
+            color: #f39c12;
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+        }
+
+        /* ============================================
+           داشبورد
+           ============================================ */
+        .user-info {
+            background: rgba(255, 248, 235, 0.5);
+            padding: 22px;
+            border-radius: 20px;
+        }
+
+        .user-info p {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .user-info p:last-child {
+            border-bottom: none;
+        }
+
+        .code-display {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #f39c12;
+            background: rgba(255, 215, 0, 0.08);
+            padding: 10px 30px;
+            border-radius: 20px;
+            display: inline-block;
+            letter-spacing: 10px;
+            border: 2px solid #f1c40f66;
+            box-shadow: 0 0 40px rgba(243, 156, 18, 0.10);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .status-badge.pending {
+            background: #f39c1233;
+            color: #d68910;
+        }
+
+        .status-badge.verified {
+            background: #2ecc7133;
+            color: #1e8449;
+        }
+
+        /* ============================================
+           گردونه
+           ============================================ */
+        .wheel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        #wheelCanvas {
+            border: 6px solid #f39c12;
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(243, 156, 18, 0.15);
+            max-width: 100%;
+            transition: transform 0.1s linear;
+            cursor: pointer;
+            background: #fff;
+        }
+
+        .auto-draw-badge {
+            background: #2ecc7133;
+            color: #1e8449;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: 700;
+            display: inline-block;
+            margin: 10px 0;
+            border: 1px solid #2ecc7144;
+            font-size: 0.95rem;
+        }
+
+        .auto-draw-badge i {
+            margin-left: 8px;
+        }
+
+        .winners-list {
+            background: rgba(255, 248, 235, 0.4);
+            padding: 20px;
+            border-radius: 20px;
+            margin: 15px 0;
+        }
+
+        .winner-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .winner-item:last-child {
+            border-bottom: none;
+        }
+
+        .winner-item.gold {
+            color: #b8860b;
+        }
+        .winner-item.silver {
+            color: #7f8c8d;
+        }
+        .winner-item.bronze {
+            color: #cd7f32;
+        }
+
+        .winner-item .prize {
+            font-weight: 800;
+            color: #e67e22;
+            background: rgba(243, 156, 18, 0.08);
+            padding: 2px 14px;
+            border-radius: 20px;
+        }
+
+        .winner-item .name-code {
+            font-weight: 700;
+        }
+
+        /* ============================================
+           گوی شناور مدیریت (Floating Action Button)
+           ============================================ */
+        .fab-admin {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 9999;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: #fff;
+            border: none;
+            box-shadow: 0 8px 30px rgba(243, 156, 18, 0.5);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: floatBounce 3s infinite;
+        }
+
+        .fab-admin:hover {
+            transform: scale(1.12) rotate(8deg);
+            box-shadow: 0 12px 40px rgba(243, 156, 18, 0.7);
+        }
+
+        .fab-admin i {
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+        }
+
+        .fab-admin .badge-admin {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #e74c3c;
+            color: #fff;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+            border: 2px solid #fff;
+        }
+
+        @keyframes floatBounce {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* ============================================
+           پنل مدیریت (مودال)
+           ============================================ */
+        .admin-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(6px);
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .admin-overlay.active {
+            display: flex;
+        }
+
+        .admin-modal {
+            background: #fefcf7;
+            border-radius: 32px;
+            max-width: 95vw;
+            width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: modalIn 0.4s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .admin-modal .close-modal {
+            position: sticky;
+            top: 0;
+            float: left;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #7f8c8d;
+            cursor: pointer;
+            padding: 0 10px;
+            transition: all 0.3s;
+            margin-top: -10px;
+            margin-left: -10px;
+        }
+
+        .admin-modal .close-modal:hover {
+            color: #e74c3c;
+            transform: rotate(90deg);
+        }
+
+        .admin-modal h2 {
+            margin-top: 0;
+        }
+
+        .admin-modal .admin-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .admin-modal .admin-controls input {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 2px solid #e8ddd0;
+            background: rgba(255, 255, 255, 0.7);
+            color: #2d1b0e;
+        }
+
+        .admin-modal .admin-controls input:focus {
+            border-color: #f39c12;
+            outline: none;
+        }
+
+        .admin-modal .admin-controls button {
+            width: auto;
+            padding: 10px 20px;
+            margin: 0;
+        }
+
+        .user-table-wrapper {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #2d1b0e;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .user-table th {
+            background: #f1c40f22;
+            color: #2d1b0e;
+            font-weight: 700;
+            padding: 12px 10px;
+            border-bottom: 2px solid #f1c40f44;
+        }
+
+        .user-table td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            text-align: center;
+        }
+
+        .user-table tr:hover {
+            background: rgba(243, 156, 18, 0.04);
+        }
+
+        .user-table .code-cell {
+            font-weight: 800;
+            color: #e67e22;
+            letter-spacing: 2px;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .admin-actions button {
+            width: auto;
+            padding: 4px 14px;
+            font-size: 0.75rem;
+            margin: 0;
+            border-radius: 30px;
+        }
+
+        /* ============================================
+           فراموشی رمز
+           ============================================ */
+        .hint-box {
+            background: #fef9f0;
+            padding: 16px 20px;
+            border-radius: 16px;
+            margin: 12px 0;
+            color: #2d1b0e;
+            border: 1px solid #f1c40f44;
+        }
+
+        /* ============================================
+           فوتر
+           ============================================ */
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #8e7a6b;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            margin-top: 30px;
+        }
+
+        .footer i {
+            color: #e74c3c;
+        }
+
+        /* ============================================
+           ریسپانسیو
+           ============================================ */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            header .logo {
+                justify-content: center;
+            }
+
+            nav {
+                justify-content: center;
+            }
+
+            nav a,
+            nav button {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+
+            section {
+                padding: 18px;
+            }
+
+            #wheelCanvas {
+                width: 260px;
+                height: 260px;
+            }
+
+            .code-display {
+                font-size: 2rem;
+                padding: 6px 20px;
+                letter-spacing: 6px;
+            }
+
+            .bank-card {
+                font-size: 1.2rem;
+            }
+
+            .fab-admin {
+                width: 60px;
+                height: 60px;
+                font-size: 1.6rem;
+                bottom: 20px;
+                left: 20px;
+            }
+
+            .admin-modal {
+                padding: 20px;
+                max-height: 95vh;
+            }
+
+            .admin-modal .admin-controls {
+                flex-direction: column;
+            }
+
+            .admin-modal .admin-controls button {
+                width: 100%;
+            }
+
+            .user-table {
+                font-size: 0.75rem;
+            }
+            .user-table th,
+            .user-table td {
+                padding: 6px 4px;
+            }
+
+            .winner-item {
+                font-size: 0.9rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .contact-info {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #wheelCanvas {
+                width: 200px;
+                height: 200px;
+            }
+            .fab-admin {
+                width: 52px;
+                height: 52px;
+                font-size: 1.3rem;
+                bottom: 16px;
+                left: 16px;
+            }
+            .user-profile .profile-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+            }
+        }
+
+        /* ============================================
+           اسکرول بار زیبا
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fdf6e3;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f1c40f;
+            border-radius: 20px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f39c12;
+        }
+
+        /* ============================================
+           استایل دکمه "قوانین را می‌پذیرم" در حالت غیرفعال
+           ============================================ */
+        #registerBtn:disabled {
+            background: #d5dbdb;
+            color: #95a5a6;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none !important;
+        }
+
+        #registerBtn:disabled:hover {
+            transform: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+    گوی شناور مدیریت (FAB) - با یکبار کلیک
+    ============================================ -->
+    <button class="fab-admin" id="fabAdmin" title="پنل مدیریت">
+        <i class="fas fa-crown"></i>
+        <span class="badge-admin">مدیر</span>
+    </button>
+
+    <!-- ============================================
+    مودال مدیریت
+    ============================================ -->
+    <div class="admin-overlay" id="adminOverlay">
+        <div class="admin-modal">
+            <button class="close-modal" id="closeAdminModal"><i class="fas fa-times"></i></button>
+            <h2><i class="fas fa-shield-alt"></i> پنل مدیریت</h2>
+
+            <div style="margin: 15px 0; background: #fef9f0; padding: 12px 18px; border-radius: 16px; border-right: 4px solid #f39c12;">
+                <p style="margin:0;font-weight:600;">🔐 رمز مدیریت: <span style="color:#e67e22;">amiryp45</span></p>
+                <p style="margin:5px 0 0;font-size:0.85rem;color:#7f8c8d;">برای دسترسی، روی گوی مدیریت کلیک کنید.</p>
+            </div>
+
+            <div class="admin-controls">
+                <input type="text" id="adminSearch" placeholder="🔍 جستجوی شماره تلفن یا نام...">
+                <button id="refreshUsersBtn" class="btn-secondary"><i class="fas fa-sync-alt"></i> بروزرسانی</button>
+                <button id="resetWheelBtn" class="btn-danger"><i class="fas fa-undo-alt"></i> تنظیم مجدد گردونه</button>
+            </div>
+
+            <div class="admin-controls">
+                <input type="text" id="addCodeInput" placeholder="کد ۳ رقمی برای گردونه">
+                <button id="addCodeBtn" class="btn-success"><i class="fas fa-plus-circle"></i> افزودن کد</button>
+            </div>
+
+            <div class="admin-controls">
+                <input type="text" id="verifyPhoneInput" placeholder="شماره تلفن برای تأیید">
+                <button id="verifyUserBtn" class="btn-success"><i class="fas fa-check-circle"></i> تأیید واریز</button>
+            </div>
+
+            <div class="user-table-wrapper">
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>نام</th>
+                            <th>تلفن</th>
+                            <th>رمز</th>
+                            <th>جمله یادآوری</th>
+                            <th>کد</th>
+                            <th>وضعیت</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr><td colspan="8" style="text-align:center;color:#95a5a6;">در حال بارگذاری...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    محتوای اصلی
+    ============================================ -->
+    <div class="container">
+
+        <!-- هدر -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-star"></i>
+                <h1>قرعه‌کشی خوش‌شانسی</h1>
+            </div>
+            <nav>
+                <a href="#" data-page="home"><i class="fas fa-home"></i> خانه</a>
+                <a href="#" data-page="login"><i class="fas fa-sign-in-alt"></i> ورود</a>
+                <a href="#" data-page="wheel"><i class="fas fa-spinner"></i> گردونه</a>
+                <button id="logoutBtn" style="display:none;"><i class="fas fa-sign-out-alt"></i> خروج</button>
+            </nav>
+        </header>
+
+        <!-- صفحه خانه -->
+        <div id="page-home" class="page active">
+
+            <section class="rules">
+                <h2><i class="fas fa-gavel"></i> قوانین و مقررات</h2>
+                <div class="rules-box">
+                    <p><i class="fas fa-check-circle"></i> هر شرکت‌کننده موظف به واریز <span class="highlight">۱,۰۰۰,۰۰۰ تومان</span> به حساب معرفی‌شده می‌باشد.</p>
+                    <p><i class="fas fa-trophy"></i> جایزه نفر اول: <span class="highlight">۳,۰۰۰,۰۰۰ تومان</span></p>
+                    <p><i class="fas fa-trophy"></i> جایزه نفر دوم: <span class="highlight">۲,۰۰۰,۰۰۰ تومان</span></p>
+                    <p><i class="fas fa-trophy"></i> جایزه نفر سوم: <span class="highlight">۱,۵۰۰,۰۰۰ تومان</span></p>
+                    <p><i class="fas fa-clock"></i> قرعه‌کشی هر شب ساعت <span class="highlight">۱۲:۰۰ بامداد</span> به‌صورت خودکار انجام می‌شود.</p>
+                    <p><i class="fas fa-telegram-plane"></i> پس از واریز، رسید را به آیدی <span class="highlight">amiro_m202</span> در تلگرام یا روبیکا ارسال کنید.</p>
+                    <p><i class="fas fa-lock"></i> اطلاعات شما محفوظ است و فقط برای قرعه‌کشی استفاده می‌شود.</p>
+                </div>
+            </section>
+
+            <!-- پروفایل کاربر (بعد از ثبت‌نام در صفحه اصلی) -->
+            <div class="user-profile" id="userProfile">
+                <div class="profile-header">
+                    <i class="fas fa-user-circle"></i>
+                    <h3>👤 اطلاعات حساب کاربری</h3>
+                </div>
+                <div class="profile-row">
+                    <span class="label"><i class="fas fa-user"></i> نام و نام خانوادگی:</span>
+                    <span class="value" id="profileName">---</span>
+                </div>
+                <div class="profile-row">
+                    <span class="label"><i class="fas fa-phone"></i> شماره تلفن:</span>
+                    <span class="value" id="profilePhone">---</span>
+                </div>
+                <div class="profile-row">
+                    <span class="label"><i class="fas fa-hashtag"></i> کد ۳ رقمی:</span>
+                    <span class="value code" id="profileCode">---</span>
+                </div>
+                <div class="profile-row">
+                    <span class="label"><i class="fas fa-info-circle"></i> وضعیت:</span>
+                    <span class="value" id="profileStatus"><span class="status-badge pending">در انتظار تأیید</span></span>
+                </div>
+            </div>
+
+            <section class="register">
+                <h2><i class="fas fa-user-plus"></i> ثبت‌نام در قرعه‌کشی</h2>
+
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> نام و نام خانوادگی:</label>
+                        <input type="text" id="fullName" placeholder="مثال: علی رضایی" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> شماره تلفن:</label>
+                        <input type="tel" id="phone" placeholder="مثال: 09123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-key"></i> رمز عبور:</label>
+                        <input type="password" id="password" placeholder="حداقل ۶ کاراکتر" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lightbulb"></i> جمله یادآوری (برای فراموشی رمز):</label>
+                        <input type="text" id="hint" placeholder="مثال: اسم کوچک مادرم" required>
+                    </div>
+
+                    <!-- دکمه پذیرش قوانین -->
+                    <div class="accept-rule">
+                        <input type="checkbox" id="acceptRules" required>
+                        <label for="acceptRules"><i class="fas fa-check-circle" style="color:#27ae60;"></i> قوانین را می‌پذیرم و با شرایط آن موافقم</label>
+                    </div>
+
+                    <button type="submit" id="registerBtn" disabled><i class="fas fa-rocket"></i> ثبت‌نام</button>
+                </form>
+                <div id="registerMessage" class="message"></div>
+            </section>
+
+            <section class="bank-info">
+                <h2><i class="fas fa-credit-card"></i> اطلاعات واریز</h2>
+                <div class="bank-box">
+                    <p><strong>شماره کارت:</strong></p>
+                    <div class="bank-card">6037 9915 4277 0809</div>
+                    <p><strong>به نام:</strong>امیر</p>
+                    <p><strong>شناسه واریز:</strong> LOT-2026</p>
+
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fab fa-telegram"></i>
+                            <span>تلگرام: <strong>amiro_m202</strong></span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-comment"></i>
+                            <span>روبیکا: <strong>amiro_m202</strong></span>
+                        </div>
+                    </div>
+
+                    <p style="color:#7f8c8d;font-size:0.9rem;margin-top:12px;">
+                        <i class="fas fa-info-circle"></i> پس از واریز، رسید را به آیدی <strong>amiro_m202</strong> در تلگرام یا روبیکا ارسال کنید.
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <!-- صفحه ورود -->
+        <div id="page-login" class="page">
+            <section>
+                <h2><i class="fas fa-sign-in-alt"></i> ورود به حساب</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> شماره تلفن:</label>
+                        <input type="tel" id="loginPhone" placeholder="شماره تلفن خود را وارد کنید" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-key"></i> رمز عبور:</label>
+                        <input type="password" id="loginPassword" placeholder="رمز عبور" required>
+                    </div>
+                    <button type="submit"><i class="fas fa-door-open"></i> ورود</button>
+                </form>
+                <button id="forgotPasswordBtn" class="btn-secondary" style="margin-top:10px;"><i class="fas fa-question-circle"></i> فراموشی رمز عبور</button>
+                <div id="forgotHint" class="hint-box" style="display:none;"></div>
+                <div id="loginMessage" class="message"></div>
+            </section>
+        </div>
+
+        <!-- صفحه گردونه -->
+        <div id="page-wheel" class="page">
+            <section>
+                <h2><i class="fas fa-spinner"></i> گردونه شانس</h2>
+                <div class="wheel-container">
+                    <span class="auto-draw-badge"><i class="fas fa-clock"></i> قرعه‌کشی خودکار هر شب ۱۲:۰۰</span>
+                    <canvas id="wheelCanvas" width="400" height="400"></canvas>
+                    <button id="spinBtn" class="btn btn-spin btn-glow"><i class="fas fa-play"></i> بچرخان</button>
+                    <p style="color:#7f8c8d;font-size:0.9rem;margin-top:6px;" id="wheelStatus">در حال بارگذاری...</p>
+                </div>
+
+                <div class="winners-list">
+                    <h3><i class="fas fa-trophy" style="color:#f39c12;"></i> برندگان شب گذشته</h3>
+                    <div class="winner-item gold"><i class="fas fa-crown"></i> <span class="name-code" id="winner1">---</span> <span class="prize">۳,۰۰۰,۰۰۰ تومان</span></div>
+                    <div class="winner-item silver"><i class="fas fa-medal"></i> <span class="name-code" id="winner2">---</span> <span class="prize">۲,۰۰۰,۰۰۰ تومان</span></div>
+                    <div class="winner-item bronze"><i class="fas fa-medal"></i> <span class="name-code" id="winner3">---</span> <span class="prize">۱,۵۰۰,۰۰۰ تومان</span></div>
+                </div>
+
+                <div style="text-align:center;color:#7f8c8d;font-size:0.9rem;padding:10px;">
+                    <i class="fas fa-users"></i> تعداد شرکت‌کنندگان: <span id="totalParticipants">۰</span> نفر
+                </div>
+            </section>
+        </div>
+
+        <!-- فوتر -->
+        <div class="footer">
+            <i class="fas fa-heart" style="color:#e74c3c;"></i> با عشق ساخته شده برای خوش‌شانسی شما <i class="fas fa-heart" style="color:#e74c3c;"></i>
+        </div>
+
+    </div>
+
+    <!-- ============================================
+    اسکریپت کامل
+    ============================================ -->
+    <script>
+        // ============================================
+        // تنظیمات JSONBin.io
+        // ============================================
+        const JSONBIN_URL = "https://api.jsonbin.io/v3/b/6a5a730eda38895dfe6c2898";
+        const JSONBIN_SECRET = "$2a$10$Y3uJQT23PdFg655lRv2f7eHwQeHurCL6FhUqAgahVxZBKOKaowlWG";
+
+        // ============================================
+        // توابع ارتباط با JSONBin
+        // ============================================
+        async function fetchData() {
+            try {
+                const response = await fetch(JSONBIN_URL, {
+                    headers: {
+                        'X-Master-Key': JSONBIN_SECRET,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                return data.record;
+            } catch (error) {
+                console.error("خطا در دریافت داده:", error);
+                return null;
+            }
+        }
+
+        async function updateData(newData) {
+            try {
+                const response = await fetch(JSONBIN_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_SECRET
+                    },
+                    body: JSON.stringify(newData)
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error("خطا در بروزرسانی:", error);
+                return null;
+            }
+        }
+
+        // ============================================
+        // ساختار پیش‌فرض
+        // ============================================
+        const defaultData = {
+            users: [],
+            winners: { first: null, second: null, third: null },
+            wheelItems: [],
+            lastDrawDate: null,
+            totalPrizePool: 0,
+            adminSettings: {
+                bankCard: "6037991542770809",
+                bankOwner: "علی محمدی",
+                adminContact: "amiro_m202",
+                prizePool: { first: 3000000, second: 2000000, third: 1500000 },
+                entryFee: 1000000,
+                drawTime: "00:00"
+            },
+            drawHistory: []
+        };
+
+        // ============================================
+        // توابع کمکی
+        // ============================================
+        function generateRandomCode() {
+            return String(Math.floor(100 + Math.random() * 900));
+        }
+
+        function getStatusBadge(status) {
+            if (status === 'verified') {
+                return '<span class="status-badge verified">✅ تأیید شده</span>';
+            }
+            return '<span class="status-badge pending">⏳ در انتظار</span>';
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `message ${type}`;
+            toast.innerHTML = message;
+            toast.style.position = 'fixed';
+            toast.style.bottom = '30px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.zIndex = '999999';
+            toast.style.maxWidth = '90%';
+            toast.style.boxShadow = '0 10px 40px rgba(0,0,0,0.1)';
+            toast.style.borderRadius = '20px';
+            toast.style.padding = '16px 28px';
+            toast.style.background = '#fff';
+            toast.style.border = '1px solid rgba(0,0,0,0.05)';
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s';
+                setTimeout(() => toast.remove(), 500);
+            }, 4500);
+        }
+
+        // ============================================
+        // مدیریت صفحات
+        // ============================================
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById('page-' + pageId);
+            if (target) target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelectorAll('[data-page]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = this.dataset.page;
+                showPage(page);
+                if (page === 'wheel') loadWheelData();
+            });
+        });
+
+        // ============================================
+        // خروج
+        // ============================================
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            this.style.display = 'none';
+            document.getElementById('userProfile').classList.remove('active');
+            showPage('home');
+            showToast('🚪 شما خارج شدید', 'info');
+        });
+
+        // ============================================
+        // فعال/غیرفعال کردن دکمه ثبت‌نام بر اساس تیک قوانین
+        // ============================================
+        document.getElementById('acceptRules').addEventListener('change', function() {
+            document.getElementById('registerBtn').disabled = !this.checked;
+        });
+
+        // ============================================
+        // نمایش پروفایل کاربر در صفحه اصلی
+        // ============================================
+        async function showUserProfile(phone) {
+            const data = await fetchData();
+            if (!data) return;
+
+            const user = data.users.find(u => u.phone === phone);
+            if (!user) return;
+
+            const profile = document.getElementById('userProfile');
+            profile.classList.add('active');
+
+            document.getElementById('profileName').textContent = user.fullName;
+            document.getElementById('profilePhone').textContent = user.phone;
+            document.getElementById('profileCode').textContent = user.code;
+            document.getElementById('profileStatus').innerHTML = getStatusBadge(user.status);
+
+            // مخفی کردن فرم ثبت‌نام
+            document.querySelector('.register').style.display = 'none';
+        }
+
+        // ============================================
+        // ثبت‌نام
+        // ============================================
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const hint = document.getElementById('hint').value.trim();
+            const msg = document.getElementById('registerMessage');
+
+            if (!fullName || !phone || !password || !hint) {
+                msg.textContent = '❌ لطفاً تمام فیلدها را پر کنید.';
+                msg.className = 'message error';
+                return;
+            }
+            if (phone.length < 11) {
+                msg.textContent = '❌ شماره تلفن معتبر وارد کنید.';
+                msg.className = 'message error';
+                return;
+            }
+
+            let data = await fetchData();
+            if (!data) data = JSON.parse(JSON.stringify(defaultData));
+
+            if (data.users.some(u => u.phone === phone)) {
+                msg.textContent = '❌ این شماره تلفن قبلاً ثبت شده است.';
+                msg.className = 'message error';
+                return;
+            }
+
+            let newCode;
+            let attempts = 0;
+            do {
+                newCode = generateRandomCode();
+                attempts++;
+            } while (data.users.some(u => u.code === newCode) && attempts < 100);
+
+            const newUser = {
+                fullName,
+                phone,
+                password,
+                hint,
+                code: newCode,
+                status: 'pending',
+                isWinner: false,
+                registerDate: new Date().toISOString()
+            };
+
+            data.users.push(newUser);
+
+            const result = await updateData(data);
+            if (result) {
+                msg.innerHTML = `✅ ثبت‌نام موفق! کد ۳ رقمی شما: <strong>${newCode}</strong>`;
+                msg.className = 'message success';
+                this.reset();
+                document.getElementById('acceptRules').checked = false;
+                document.getElementById('registerBtn').disabled = true;
+
+                localStorage.setItem('currentUser', JSON.stringify({ phone, code: newCode }));
+                document.getElementById('logoutBtn').style.display = 'inline-block';
+
+                // نمایش پروفایل کاربر
+                await showUserProfile(phone);
+
+                showToast('🎉 ثبت‌نام با موفقیت انجام شد!', 'success');
+            } else {
+                msg.textContent = '❌ خطا در ارتباط با سرور. لطفاً دوباره تلاش کنید.';
+                msg.className = 'message error';
+            }
+        });
+
+        // ============================================
+        // ورود
+        // ============================================
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const phone = document.getElementById('loginPhone').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const msg = document.getElementById('loginMessage');
+
+            if (!phone || !password) {
+                msg.textContent = '❌ لطفاً تمام فیلدها را پر کنید.';
+                msg.className = 'message error';
+                return;
+            }
+
+            const data = await fetchData();
+            if (!data) {
+                msg.textContent = '❌ خطا در ارتباط با سرور.';
+                msg.className = 'message error';
+                return;
+            }
+
+            const user = data.users.find(u => u.phone === phone);
+            if (!user) {
+                msg.textContent = '❌ کاربری با این شماره تلفن یافت نشد.';
+                msg.className = 'message error';
+                return;
+            }
+            if (user.password !== password) {
+                msg.textContent = '❌ رمز عبور اشتباه است.';
+                msg.className = 'message error';
+                return;
+            }
+
+            localStorage.setItem('currentUser', JSON.stringify({ phone, code: user.code }));
+            msg.textContent = '✅ ورود موفق!';
+            msg.className = 'message success';
+            document.getElementById('logoutBtn').style.display = 'inline-block';
+
+            // نمایش پروفایل در صفحه اصلی
+            showPage('home');
+            await showUserProfile(phone);
+            showToast('👋 خوش آمدید!', 'success');
+        });
+
+        // ============================================
+        // فراموشی رمز
+        // ============================================
+        document.getElementById('forgotPasswordBtn').addEventListener('click', async function() {
+            const phone = document.getElementById('loginPhone').value.trim();
+            const hintBox = document.getElementById('forgotHint');
+
+            if (!phone) {
+                hintBox.style.display = 'block';
+                hintBox.innerHTML = '⚠️ لطفاً شماره تلفن خود را وارد کنید.';
+                return;
+            }
+
+            const data = await fetchData();
+            if (!data) {
+                hintBox.style.display = 'block';
+                hintBox.innerHTML = '❌ خطا در ارتباط با سرور.';
+                return;
+            }
+
+            const user = data.users.find(u => u.phone === phone);
+            if (!user) {
+                hintBox.style.display = 'block';
+                hintBox.innerHTML = '❌ کاربری با این شماره تلفن یافت نشد.';
+                return;
+            }
+
+            hintBox.style.display = 'block';
+            hintBox.innerHTML = `
+                🔑 جمله یادآوری شما: <strong>${user.hint}</strong><br>
+                📝 رمز عبور شما: <strong>${user.password}</strong>
+            `;
+        });
+
+        // ============================================
+        // گردونه
+        // ============================================
+        let isSpinning = false;
+
+        async function loadWheelData() {
+            const data = await fetchData();
+            if (!data) {
+                document.getElementById('wheelStatus').textContent = '❌ خطا در دریافت داده';
+                return;
+            }
+
+            document.getElementById('totalParticipants').textContent = data.users.filter(u => u.status === 'verified')
+                .length;
+
+            const winners = data.winners || {};
+            const users = data.users;
+            const getWinnerDisplay = (code) => {
+                if (!code) return '---';
+                const u = users.find(user => user.code === code);
+                return u ? `${u.fullName} (${code})` : code;
+            };
+            document.getElementById('winner1').textContent = getWinnerDisplay(winners.first);
+            document.getElementById('winner2').textContent = getWinnerDisplay(winners.second);
+            document.getElementById('winner3').textContent = getWinnerDisplay(winners.third);
+
+            drawWheel(data);
+        }
+
+        function drawWheel(data) {
+            const canvas = document.getElementById('wheelCanvas');
+            const ctx = canvas.getContext('2d');
+            const items = data.wheelItems || [];
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(canvas.width, canvas.height) / 2 - 20;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (items.length === 0) {
+                ctx.fillStyle = '#d5dbdb';
+                ctx.font = 'bold 20px Tahoma';
+                ctx.textAlign = 'center';
+                ctx.fillText('⏳ منتظر پر شدن گردونه...', centerX, centerY);
+                document.getElementById('wheelStatus').textContent = '⏳ گردونه خالی است';
+                return;
+            }
+
+            const sliceAngle = (2 * Math.PI) / items.length;
+
+            items.forEach((item, i) => {
+                const startAngle = i * sliceAngle;
+                const endAngle = startAngle + sliceAngle;
+                const hue = (i * 137.5 + 30) % 360;
+
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = `hsl(${hue}, 75%, 65%)`;
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(startAngle + sliceAngle / 2);
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#2d1b0e';
+                ctx.font = 'bold 14px Tahoma';
+                ctx.shadowColor = 'rgba(255,255,255,0.5)';
+                ctx.shadowBlur = 6;
+                ctx.fillText(item, radius * 0.7, 6);
+                ctx.restore();
+            });
+
+            // حلقه مرکزی
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 24, 0, 2 * Math.PI);
+            ctx.fillStyle = '#f39c12';
+            ctx.fill();
+            ctx.shadowColor = 'rgba(243,156,18,0.4)';
+            ctx.shadowBlur = 25;
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 18px Tahoma';
+            ctx.textAlign = 'center';
+            ctx.shadowBlur = 0;
+            ctx.fillText('🎯', centerX, centerY + 5);
+
+            document.getElementById('wheelStatus').textContent = `✅ ${items.length} کد در گردونه`;
+        }
+
+        // چرخاندن
+        document.getElementById('spinBtn').addEventListener('click', function() {
+            if (isSpinning) return;
+            fetchData().then(data => {
+                if (!data || data.wheelItems.length === 0) {
+                    showToast('⚠️ گردونه خالی است!', 'error');
+                    return;
+                }
+                spinWheel();
+            });
+        });
+
+        function spinWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            isSpinning = true;
+            const btn = document.getElementById('spinBtn');
+            btn.disabled = true;
+
+            const duration = 4000 + Math.random() * 2000;
+            const rotations = 5 + Math.random() * 5;
+            let startTime = null;
+
+            function animate(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const angle = eased * rotations * 2 * Math.PI;
+                canvas.style.transform = `rotate(${angle}rad)`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    isSpinning = false;
+                    btn.disabled = false;
+                    determineWinner();
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        async function determineWinner() {
+            let data = await fetchData();
+            if (!data || data.wheelItems.length === 0) {
+                showToast('⚠️ گردونه خالی است!', 'error');
+                return;
+            }
+
+            const shuffled = [...data.wheelItems].sort(() => 0.5 - Math.random());
+            const winners = {
+                first: shuffled[0] || null,
+                second: shuffled[1] || null,
+                third: shuffled[2] || null
+            };
+
+            data.winners = winners;
+            data.lastDrawDate = new Date().toISOString();
+            data.users.forEach(u => {
+                u.isWinner = (u.code === winners.first || u.code === winners.second || u.code === winners
+                    .third);
+            });
+
+            const result = await updateData(data);
+            if (result) {
+                showToast('🎉 قرعه‌کشی انجام شد! برندگان مشخص شدند.', 'success');
+                await loadWheelData();
+            }
+        }
+
+        // ============================================
+        // گوی شناور مدیریت - با یکبار کلیک
+        // ============================================
+        const fabAdmin = document.getElementById('fabAdmin');
+        const adminOverlay = document.getElementById('adminOverlay');
+        const closeAdminModal = document.getElementById('closeAdminModal');
+
+        fabAdmin.addEventListener('click', function() {
+            const pass = prompt('🔐 لطفاً رمز مدیریت را وارد کنید:');
+            if (pass === 'amiryp45') {
+                adminOverlay.classList.add('active');
+                loadUsersTable();
+                showToast('✅ دسترسی به پنل مدیریت باز شد', 'success');
+            } else if (pass !== null) {
+                alert('❌ رمز اشتباه است!');
+            }
+        });
+
+        closeAdminModal.addEventListener('click', function() {
+            adminOverlay.classList.remove('active');
+        });
+
+        adminOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+
+        // ============================================
+        // توابع مدیریت
+        // ============================================
+        async function loadUsersTable() {
+            const data = await fetchData();
+            if (!data) {
+                document.getElementById('usersTableBody').innerHTML =
+                    '<tr><td colspan="8" style="text-align:center;color:#e74c3c;">❌ خطا در بارگذاری</td></tr>';
+                return;
+            }
+
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+
+            if (data.users.length === 0) {
+                tbody.innerHTML =
+                    '<tr><td colspan="8" style="text-align:center;color:#95a5a6;">هیچ کاربری ثبت نشده است</td></tr>';
+                return;
+            }
+
+            data.users.forEach((user, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${user.fullName}</td>
+                        <td>${user.phone}</td>
+                        <td style="font-family:monospace;">${user.password}</td>
+                        <td>${user.hint}</td>
+                        <td class="code-cell">${user.code}</td>
+                        <td>${getStatusBadge(user.status)}</td>
+                        <td>
+                            <div class="admin-actions">
+                                ${user.status !== 'verified' ? `<button class="btn-success verify-btn" data-phone="${user.phone}" style="padding:4px 12px;font-size:0.75rem;">✅ تأیید</button>` : ''}
+                            </div>
+                        </td>
+                    `;
+                tbody.appendChild(tr);
+            });
+
+            document.querySelectorAll('.verify-btn').forEach(btn => {
+                btn.addEventListener('click', async function() {
+                    await verifyUser(this.dataset.phone);
+                });
+            });
+        }
+
+        async function verifyUser(phone) {
+            const data = await fetchData();
+            if (!data) {
+                showToast('❌ خطا در ارتباط با سرور', 'error');
+                return;
+            }
+
+            const user = data.users.find(u => u.phone === phone);
+            if (!user) {
+                showToast('❌ کاربر یافت نشد', 'error');
+                return;
+            }
+            if (user.status === 'verified') {
+                showToast('⚠️ این کاربر قبلاً تأیید شده است', 'info');
+                return;
+            }
+
+            user.status = 'verified';
+            if (!data.wheelItems.includes(user.code)) {
+                data.wheelItems.push(user.code);
+            }
+
+            const result = await updateData(data);
+            if (result) {
+                showToast(`✅ کاربر ${user.fullName} تأیید شد`, 'success');
+                loadUsersTable();
+                loadWheelData();
+                // بروزرسانی پروفایل اگر کاربر در صفحه اصلی باشد
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser && currentUser.phone === phone) {
+                    await showUserProfile(phone);
+                }
+            } else {
+                showToast('❌ خطا در بروزرسانی', 'error');
+            }
+        }
+
+        document.getElementById('refreshUsersBtn').addEventListener('click', loadUsersTable);
+
+        document.getElementById('adminSearch').addEventListener('input', function() {
+            const query = this.value.trim().toLowerCase();
+            document.querySelectorAll('#usersTableBody tr').forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+
+        document.getElementById('addCodeBtn').addEventListener('click', async function() {
+            const input = document.getElementById('addCodeInput');
+            const code = input.value.trim();
+            if (!code || !/^\d{3}$/.test(code)) {
+                showToast('⚠️ کد ۳ رقمی معتبر وارد کنید', 'error');
+                return;
+            }
+
+            const data = await fetchData();
+            if (!data) {
+                showToast('❌ خطا در ارتباط با سرور', 'error');
+                return;
+            }
+            if (data.wheelItems.includes(code)) {
+                showToast('⚠️ این کد قبلاً در گردونه است', 'error');
+                return;
+            }
+
+            data.wheelItems.push(code);
+            const result = await updateData(data);
+            if (result) {
+                showToast(`✅ کد ${code} به گردونه اضافه شد`, 'success');
+                input.value = '';
+                loadWheelData();
+            } else {
+                showToast('❌ خطا در بروزرسانی', 'error');
+            }
+        });
+
+        document.getElementById('resetWheelBtn').addEventListener('click', async function() {
+            if (!confirm('⚠️ آیا مطمئن هستید؟ همه کدها و برندگان پاک می‌شوند.')) return;
+            const data = await fetchData();
+            if (!data) {
+                showToast('❌ خطا در ارتباط با سرور', 'error');
+                return;
+            }
+            data.wheelItems = [];
+            data.winners = { first: null, second: null, third: null };
+            const result = await updateData(data);
+            if (result) {
+                showToast('✅ گردونه تنظیم مجدد شد', 'success');
+                loadWheelData();
+                loadUsersTable();
+            } else {
+                showToast('❌ خطا در بروزرسانی', 'error');
+            }
+        });
+
+        document.getElementById('verifyUserBtn').addEventListener('click', async function() {
+            const phone = document.getElementById('verifyPhoneInput').value.trim();
+            if (!phone) {
+                showToast('⚠️ شماره تلفن را وارد کنید', 'error');
+                return;
+            }
+            await verifyUser(phone);
+            document.getElementById('verifyPhoneInput').value = '';
+        });
+
+        // ============================================
+        // قرعه‌کشی خودکار هر شب ۱۲
+        // ============================================
+        setInterval(async () => {
+            const now = new Date();
+            if (now.getHours() === 0 && now.getMinutes() === 0) {
+                await determineWinner();
+            }
+        }, 30000);
+
+        // ============================================
+        // بارگذاری اولیه
+        // ============================================
+        document.addEventListener('DOMContentLoaded', async function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                document.getElementById('logoutBtn').style.display = 'inline-block';
+                const data = await fetchData();
+                if (data) {
+                    const user = data.users.find(u => u.phone === currentUser.phone);
+                    if (user) {
+                        localStorage.setItem('currentUser', JSON.stringify({ phone: user.phone, code: user.code }));
+                        // نمایش پروفایل کاربر در صفحه اصلی
+                        await showUserProfile(user.phone);
+                        // مخفی کردن فرم ثبت‌نام
+                        document.querySelector('.register').style.display = 'none';
+                    }
+                }
+            }
+
+            await loadWheelData();
+            showPage('home');
+
+            // کوچک‌نمایی گوی در موبایل            if (window.innerWidth < 480) {
+                document.querySelector('.fab-admin').style.width = '48px';
+                document.querySelector('.fab-admin').style.height = '48px';
+                document.querySelector('.fab-admin').style.fontSize = '1.2rem';
+            }
+
+            console.log('🎰 قرعه‌کشی خوش‌شانسی راه‌اندازی شد!');
+            console.log('📞 شماره کارت: 6037991542770809');
+            console.log('🆔 آیدی پشتیبانی: amiro_m202 (تلگرام و روبیکا)');
+        });
+
+        // ============================================
+        // خطاهای global
+        // ============================================
+        window.onerror = function(msg, url, line, col, error) {
+            console.error('❌ خطا:', msg, error);
+            showToast('⚠️ خطایی رخ داد. لطفاً دوباره تلاش کنید.', 'error');
+        };
+    </script>
+
+</body>
+</html>
